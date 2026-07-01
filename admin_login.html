@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ _('admin_login_title') }}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <style>
+    body { background: #0a0a1a; min-height: 100vh; display: flex; align-items: center; justify-content: center; }
+    body::before { display: none; }
+    .admin-login-card {
+      background: #16213e; border-radius: 12px; padding: 32px;
+      width: 100%; max-width: 380px; border: 1px solid #3ea8da;
+      box-shadow: 0 8px 40px rgba(0,0,0,.5);
+    }
+    .admin-login-card h1 { color: #fff; font-size: 22px; text-align: center; margin-bottom: 4px; }
+    .admin-login-card h1 span { color: #3ea8da; }
+    .admin-login-card p.sub { color: #8899aa; text-align: center; font-size: 12px; margin: 2px 0 20px; }
+    .form-group { margin-bottom: 14px; }
+    .form-group label { display: block; color: #ccc; font-size: 13px; margin-bottom: 4px; }
+    .form-group input {
+      width: 100%; padding: 10px 14px; border: 1px solid #2a2a4a; border-radius: 6px;
+      background: #000; color: #e0e0e0; font-size: 14px; outline: none;
+    }
+    .form-group input:focus { border-color: #3ea8da; }
+    .btn-admin {
+      width: 100%; padding: 11px; background: #3ea8da; color: #fff;
+      border: none; border-radius: 6px; font-size: 15px; font-weight: 700;
+      cursor: pointer; margin-top: 6px;
+    }
+    .btn-admin:hover { background: #2d8ec0; }
+    .error-msg { color: #e06060; text-align: center; font-size: 13px; margin-bottom: 10px; }
+  </style>
+</head>
+<body>
+  <div class="admin-login-card">
+    <h1>Guide Touristique — <span>Admin</span></h1>
+    <p class="sub">{{ _('admin_login_title') }}</p>
+    {% if error %}
+    <p class="error-msg">{{ error }}</p>
+    {% endif %}
+    <form method="POST" action="/admin">
+      <div class="form-group">
+        <label>{{ _('admin_username') }}</label>
+        <input type="text" name="username" required>
+      </div>
+      <div class="form-group">
+        <label>{{ _('admin_password') }}</label>
+        <input type="password" name="password" required>
+      </div>
+      <button type="submit" class="btn-admin">{{ _('admin_login_btn') }}</button>
+    </form>
+  </div>
+</body>
+</html>

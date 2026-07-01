@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin — Gestion des villes</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: #0a0a1a; font-family: 'Segoe UI', system-ui, sans-serif; display: flex; min-height: 100vh; }
+    body::before { display: none; }
+    .sidebar {
+      width: 220px; background: #0f1629; border-right: 1px solid #1a2744;
+      padding: 24px 0; display: flex; flex-direction: column; position: fixed; inset: 0 auto 0 0;
+    }
+    .sidebar h2 { color: #fff; font-size: 18px; padding: 0 20px 20px; border-bottom: 1px solid #1a2744; margin-bottom: 12px; }
+    .sidebar h2 span { color: #3ea8da; }
+    .sidebar a {
+      display: flex; align-items: center; gap: 10px; padding: 10px 20px; color: #8899aa;
+      text-decoration: none; font-size: 13px; font-weight: 500; transition: all .2s;
+      border-left: 3px solid transparent;
+    }
+    .sidebar a:hover { color: #e0e0e0; background: rgba(62,168,218,.06); }
+    .sidebar a.active { color: #3ea8da; background: rgba(62,168,218,.1); border-left-color: #3ea8da; }
+    .sidebar a.logout { color: #e06060; }
+    .sidebar a.logout:hover { background: rgba(224,96,96,.1); }
+    .main { margin-left: 220px; flex: 1; padding: 32px 36px; max-width: calc(100vw - 220px); }
+    .top-bar {
+      display: flex; justify-content: space-between; align-items: center; margin-bottom: 28px; flex-wrap: wrap; gap: 12px;
+    }
+    .top-bar h1 { color: #fff; font-size: 22px; font-weight: 600; }
+    .top-bar h1 span { color: #3ea8da; }
+    .top-bar h1 small { color: #667; font-size: 13px; font-weight: 400; margin-left: 8px; }
+    .top-actions { display: flex; gap: 8px; }
+    .btn {
+      padding: 8px 16px; border-radius: 6px; font-size: 12px; font-weight: 600;
+      cursor: pointer; border: none; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;
+      transition: all .2s;
+    }
+    .btn-primary { background: #3ea8da; color: #fff; }
+    .btn-primary:hover { background: #2d8ec0; }
+    .btn-add { background: #28a745; color: #fff; }
+    .btn-add:hover { background: #218838; }
+    .btn-outline { background: transparent; color: #3ea8da; border: 1px solid #3ea8da; }
+    .btn-outline:hover { background: #3ea8da; color: #fff; }
+    .btn-sm { padding: 4px 10px; font-size: 11px; border-radius: 4px; cursor: pointer; border: none; display: inline-flex; align-items: center; gap: 4px; transition: all .2s; }
+    .btn-edit { background: #3ea8da; color: #fff; }
+    .btn-edit:hover { background: #2d8ec0; }
+    .btn-del { background: #dc3545; color: #fff; }
+    .btn-del:hover { background: #c82333; }
+    .msg { padding: 10px 16px; border-radius: 6px; margin-bottom: 16px; font-size: 13px; }
+    .msg-ok { background: #1a3a2a; color: #5ac482; border: 1px solid #28a745; }
+    .table-wrap { overflow-x: auto; border-radius: 12px; border: 1px solid #1e3050; background: linear-gradient(135deg, #0f1629 0%, #0d1a2e 100%); margin-bottom: 24px; }
+    table { width: 100%; border-collapse: separate; border-spacing: 0; min-width: 700px; }
+    thead th { background: linear-gradient(180deg, #13203a 0%, #0f1a30 100%); color: #5a9fd4; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .8px; padding: 14px 16px; text-align: left; white-space: nowrap; border-bottom: 2px solid #1e3050; }
+    thead th:not(:last-child) { border-right: 1px solid #152540; }
+    tbody td { padding: 12px 16px; font-size: 13px; color: #c8d0dc; border-bottom: 1px solid #152540; transition: background .15s; }
+    tbody tr:nth-child(even) td { background: rgba(62,168,218,.03); }
+    tbody tr:hover td { background: rgba(62,168,218,.08); }
+    tbody tr:last-child td { border-bottom: none; }
+    .city-row { cursor: pointer; }
+    .badge-count {
+      display: inline-block; background: #1a2744; color: #8899aa; border-radius: 10px;
+      padding: 1px 8px; font-size: 11px; font-weight: 600;
+    }
+    .item-expand { display: none; }
+    .item-expand.open { display: table-row; }
+    .item-expand td { padding: 0; background: #080e1a; }
+    .item-expand-inner { padding: 16px 28px; }
+    .section-box {
+      background: #0f1629; border: 1px solid #1a2744; border-radius: 8px; margin-bottom: 12px;
+      overflow: hidden;
+    }
+    .section-box h3 {
+      color: #fff; font-size: 13px; margin: 0; padding: 10px 14px;
+      background: rgba(62,168,218,.06); border-bottom: 1px solid #1a2744;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .section-box h3 span { color: #3ea8da; }
+    .section-box table { min-width: 0; }
+    .section-box table th { background: linear-gradient(180deg, #13203a 0%, #0f1a30 100%); font-size: 10px; padding: 8px 12px; color: #5a9fd4; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; border-bottom: 1px solid #1e3050; }
+    .section-box table td { font-size: 12px; padding: 8px 12px; border-bottom: 1px solid #152540; }
+    .empty-sm { color: #445; padding: 20px; text-align: center; font-size: 13px; }
+    .empty-state { text-align: center; color: #445; padding: 60px 20px; font-size: 14px; }
+    .modal-overlay {
+      display: none; position: fixed; inset: 0; background: rgba(0,0,0,.85); z-index: 300;
+      align-items: center; justify-content: center; backdrop-filter: blur(4px);
+    }
+    .modal-box {
+      background: #0f1629; border: 1px solid #3ea8da; border-radius: 12px;
+      padding: 24px; width: 100%; max-width: 520px; max-height: 80vh; overflow-y: auto;
+      box-shadow: 0 8px 40px rgba(0,0,0,.5);
+    }
+    .modal-box h3 { color: #fff; font-size: 16px; margin-bottom: 16px; padding-bottom: 10px; border-bottom: 1px solid #1a2744; }
+    .modal-box h3 span { color: #3ea8da; }
+    .modal-box label { display: block; color: #8899aa; font-size: 11px; margin-bottom: 3px; font-weight: 500; text-transform: uppercase; letter-spacing: .3px; }
+    .modal-box input, .modal-box textarea {
+      width: 100%; padding: 8px 12px; border: 1px solid #1a2744; border-radius: 6px;
+      background: #000; color: #e0e0e0; font-size: 13px; outline: none; margin-bottom: 12px; transition: border .2s;
+    }
+    .modal-box input:focus, .modal-box textarea:focus { border-color: #3ea8da; }
+    .modal-box textarea { min-height: 60px; resize: vertical; }
+    .modal-box .row { display: flex; gap: 10px; }
+    .modal-box .row > div { flex: 1; }
+    .modal-actions { display: flex; gap: 8px; margin-top: 6px; }
+    @media (max-width: 768px) {
+      .sidebar { width: 56px; }
+      .sidebar h2, .sidebar a span { display: none; }
+      .sidebar a { justify-content: center; padding: 10px; font-size: 16px; }
+      .main { margin-left: 56px; padding: 16px; max-width: calc(100vw - 56px); }
+    }
+  </style>
+</head>
+<body>
+  <nav class="sidebar">
+    <h2><span>TG</span> Admin</h2>
+    <a href="/admin/dashboard"><span><i class="fas fa-clipboard-list"></i></span><span>Réservations</span></a>
+    <a href="/admin/cities" class="active"><span><i class="fas fa-city"></i></span><span>Villes</span></a>
+    <div style="margin-top:auto;display:flex;flex-direction:column;">
+      <a href="/"><span><i class="fas fa-arrow-left"></i></span><span>Retour au site</span></a>
+      <a href="/admin/logout" class="logout"><span><i class="fas fa-door-open"></i></span><span>Déconnexion</span></a>
+    </div>
+  </nav>
+  <div class="main">
+    <div class="top-bar">
+      <h1><span>Villes</span><small>Gestion des destinations</small></h1>
+      <div class="top-actions">
+        <button class="btn btn-add" onclick="openCityModal()"><i class="fas fa-plus"></i> Ajouter une ville</button>
+      </div>
+    </div>
+    {% if msg %}
+    <div class="msg msg-ok">{{ msg }}</div>
+    {% endif %}
+    {% if cities %}
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Ville</th>
+            <th>ID</th>
+            <th>Restaurants</th>
+            <th>Hôtels</th>
+            <th>Transports</th>
+            <th>Lieux</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for city in cities %}
+          <tr class="city-row" onclick="toggleItems('{{ city.id }}')">
+            <td><span style="color:#e0e0e0;font-weight:500;">{{ city.name }}</span></td>
+            <td style="color:#667;font-size:12px;">{{ city.id }}</td>
+            <td><span class="badge-count">{{ city.restaurants|length }}</span></td>
+            <td><span class="badge-count">{{ city.hotels|length }}</span></td>
+            <td><span class="badge-count">{{ city.transports|length }}</span></td>
+            <td><span class="badge-count">{{ city.places|length }}</span></td>
+            <td onclick="event.stopPropagation()">
+              <button class="btn-sm btn-edit" onclick="editCity('{{ city.id }}')"><i class="fas fa-pencil-alt"></i> Modifier</button>
+              <form action="/admin/cities/delete/{{ city.id }}" method="POST" style="display:inline;" onsubmit="return confirm('Supprimer {{ city.name }} ?')">
+                <button class="btn-sm btn-del"><i class="fas fa-trash-alt"></i> Supprimer</button>
+              </form>
+            </td>
+          </tr>
+          <tr class="item-expand" id="items-{{ city.id }}">
+            <td colspan="7">
+              <div class="item-expand-inner">
+                {% for section in ['restaurants','hotels','transports','places'] %}
+                <div class="section-box">
+                  <h3><span><i class="fas fa-tag"></i> {{ section|capitalize }}</span>
+                    <button class="btn-sm btn-add" style="padding:3px 10px;font-size:11px;" onclick="openItemModal('{{ city.id }}','{{ section }}')"><i class="fas fa-plus"></i> Ajouter</button>
+                  </h3>
+                  {% set items = city[section] %}
+                  {% if items %}
+                  <table>
+                    <thead><tr><th>Nom</th><th>Image</th><th>Note</th><th><i class="fas fa-star"></i></th><th>Actions</th></tr></thead>
+                    <tbody>
+                      {% for item in items %}
+                      <tr>
+                        <td>{{ item.name }}</td>
+                        <td style="font-size:11px;color:#667;">{{ item.image|default('—', true) }}</td>
+                        <td style="font-size:11px;color:#667;">{{ item.note|default('—', true) }}</td>
+                        <td>{% if item.stars %}{{ '★' * item.stars }}{{ '☆' * (5 - item.stars) }}{% else %}—{% endif %}</td>
+                        <td>
+                          <button class="btn-sm btn-edit" onclick="editItem('{{ city.id }}','{{ section }}',{{ loop.index0 }})"><i class="fas fa-pencil-alt"></i></button>
+                          <form action="/admin/cities/{{ city.id }}/delete_item/{{ section }}/{{ loop.index0 }}" method="POST" style="display:inline;" onsubmit="return confirm('Supprimer {{ item.name }} ?')">
+                            <button class="btn-sm btn-del"><i class="fas fa-trash-alt"></i></button>
+                          </form>
+                        </td>
+                      </tr>
+                      {% endfor %}
+                    </tbody>
+                  </table>
+                  {% else %}
+                  <div class="empty-sm">Aucun élément — cliquez sur "Ajouter"</div>
+                  {% endif %}
+                </div>
+                {% endfor %}
+              </div>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% else %}
+    <p class="empty-state">Aucune ville pour le moment. <button class="btn btn-add" onclick="openCityModal()">Ajoutez-en une</button></p>
+    {% endif %}
+  </div>
+
+  <!-- City Modal -->
+  <div class="modal-overlay" id="city-modal">
+    <div class="modal-box">
+      <h3><span id="city-modal-title">Ajouter une ville</span></h3>
+      <form id="city-form" action="/admin/cities/save" method="POST">
+        <input type="hidden" name="original_id" id="city-original-id">
+        <label>ID unique</label>
+        <input type="text" name="id" id="city-id" required placeholder="ex: marrakech">
+        <label>Nom</label>
+        <input type="text" name="name" id="city-name" required placeholder="ex: Marrakech">
+        <label>Sous-titre</label>
+        <input type="text" name="subtitle" id="city-subtitle" placeholder="ex: La ville rouge">
+        <label>Description</label>
+        <textarea name="description" id="city-description" placeholder="Description de la ville..."></textarea>
+        <label>Image (chemin relatif)</label>
+        <input type="text" name="image" id="city-image" placeholder="assets/cities/ville.jpg">
+        <label>URL Google Maps Embed</label>
+        <input type="text" name="map_url" id="city-map-url" placeholder="https://www.google.com/maps/embed?...">
+        <div class="row">
+          <div><label>Population</label><input type="text" name="population" id="city-population" placeholder="ex: 1 000 000"></div>
+          <div><label>Langue</label><input type="text" name="language" id="city-language" placeholder="ex: Arabe / Français"></div>
+        </div>
+        <div class="row">
+          <div><label>Monnaie</label><input type="text" name="currency" id="city-currency" value="MAD"></div>
+          <div><label>Climat</label><input type="text" name="climate" id="city-climate" placeholder="ex: Méditerranéen"></div>
+        </div>
+        <div class="row">
+          <div><label>Latitude</label><input type="number" step="any" name="lat" id="city-lat" placeholder="ex: 31.6295"></div>
+          <div><label>Longitude</label><input type="number" step="any" name="lng" id="city-lng" placeholder="ex: -7.9811"></div>
+        </div>
+        <div class="modal-actions">
+          <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Enregistrer</button>
+          <button type="button" class="btn btn-outline" onclick="closeModal('city-modal')">Annuler</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Item Modal -->
+  <div class="modal-overlay" id="item-modal">
+    <div class="modal-box">
+      <h3><span id="item-modal-title">Ajouter un élément</span></h3>
+      <form id="item-form" action="" method="POST">
+        <input type="hidden" name="city_id" id="item-city-id">
+        <input type="hidden" name="section" id="item-section">
+        <input type="hidden" name="item_idx" id="item-idx" value="-1">
+        <label>Nom</label>
+        <input type="text" name="name" id="item-name" required placeholder="Nom de l'établissement">
+        <label>Image (chemin)</label>
+        <input type="text" name="image" id="item-image" placeholder="assets/cities/photo.jpg">
+        <label>Description / Note</label>
+        <input type="text" name="note" id="item-note" placeholder="Courte description...">
+        <label>Étoiles (0-5)</label>
+        <input type="number" name="stars" id="item-stars" min="0" max="5" placeholder="4">
+        <div class="modal-actions">
+          <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Enregistrer</button>
+          <button type="button" class="btn btn-outline" onclick="closeModal('item-modal')">Annuler</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    function toggleItems(cityId) {
+      var el = document.getElementById('items-' + cityId);
+      el.classList.toggle('open');
+    }
+    function closeModal(id) {
+      document.getElementById(id).style.display = 'none';
+    }
+    function openCityModal() {
+      document.getElementById('city-modal-title').textContent = 'Ajouter une ville';
+      document.getElementById('city-form').action = '/admin/cities/save';
+      document.getElementById('city-original-id').value = '';
+      document.getElementById('city-id').value = '';
+      document.getElementById('city-id').readOnly = false;
+      document.getElementById('city-name').value = '';
+      document.getElementById('city-subtitle').value = '';
+      document.getElementById('city-description').value = '';
+      document.getElementById('city-image').value = '';
+      document.getElementById('city-map-url').value = '';
+      document.getElementById('city-population').value = '';
+      document.getElementById('city-language').value = '';
+      document.getElementById('city-currency').value = 'MAD';
+      document.getElementById('city-climate').value = '';
+      document.getElementById('city-lat').value = '';
+      document.getElementById('city-lng').value = '';
+      document.getElementById('city-modal').style.display = 'flex';
+    }
+    function editCity(cityId) {
+      fetch('/api/city/' + cityId).then(function(r){ return r.json(); }).then(function(c){
+        if (!c || c.error) return;
+        document.getElementById('city-modal-title').textContent = 'Modifier — ' + c.name;
+        document.getElementById('city-form').action = '/admin/cities/save';
+        document.getElementById('city-original-id').value = c.id;
+        document.getElementById('city-id').value = c.id;
+        document.getElementById('city-id').readOnly = true;
+        document.getElementById('city-name').value = c.name || '';
+        document.getElementById('city-subtitle').value = c.subtitle || '';
+        document.getElementById('city-description').value = c.description || '';
+        document.getElementById('city-image').value = c.image || '';
+        document.getElementById('city-map-url').value = c.map_url || '';
+        var s = c.stats || {};
+        document.getElementById('city-population').value = s.population || '';
+        document.getElementById('city-language').value = s.language || '';
+        document.getElementById('city-currency').value = s.currency || 'MAD';
+        document.getElementById('city-climate').value = s.climate || '';
+        var loc = c.location || {};
+        document.getElementById('city-lat').value = loc.lat || '';
+        document.getElementById('city-lng').value = loc.lng || '';
+        document.getElementById('city-modal').style.display = 'flex';
+      });
+    }
+    function openItemModal(cityId, section) {
+      document.getElementById('item-modal-title').textContent = 'Ajouter — ' + section;
+      document.getElementById('item-form').action = '/admin/cities/' + cityId + '/add_item/' + section;
+      document.getElementById('item-city-id').value = cityId;
+      document.getElementById('item-section').value = section;
+      document.getElementById('item-idx').value = -1;
+      document.getElementById('item-name').value = '';
+      document.getElementById('item-image').value = '';
+      document.getElementById('item-note').value = '';
+      document.getElementById('item-stars').value = '';
+      document.getElementById('item-modal').style.display = 'flex';
+    }
+    function editItem(cityId, section, idx) {
+      fetch('/api/city/' + cityId).then(function(r){ return r.json(); }).then(function(c){
+        if (!c || c.error) return;
+        var items = c[section] || [];
+        var item = items[idx];
+        if (!item) return;
+        document.getElementById('item-modal-title').textContent = 'Modifier — ' + item.name;
+        document.getElementById('item-form').action = '/admin/cities/' + cityId + '/update_item/' + section + '/' + idx;
+        document.getElementById('item-city-id').value = cityId;
+        document.getElementById('item-section').value = section;
+        document.getElementById('item-idx').value = idx;
+        document.getElementById('item-name').value = item.name || '';
+        document.getElementById('item-image').value = item.image || '';
+        document.getElementById('item-note').value = item.note || '';
+        document.getElementById('item-stars').value = item.stars || '';
+        document.getElementById('item-modal').style.display = 'flex';
+      });
+    }
+    document.querySelectorAll('.modal-overlay').forEach(function(el){
+      el.addEventListener('click', function(e){ if (e.target === this) this.style.display = 'none'; });
+    });
+  </script>
+</body>
+</html>

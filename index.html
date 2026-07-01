@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}{{ _('page_title') }}{% endblock %}
+{% block content %}
+<section class="hero">
+  <h1>{{ _('guide_touristique_hero') }}</h1>
+  <h2 class="hero-maroc">{{ _('maroc') }}</h2>
+  <p class="hero-desc">{{ _('decouvrir') }}</p>
+</section>
+
+<section class="search-section">
+  <div class="search-wrapper">
+    <span class="search-icon"><i class="fas fa-search"></i></span>
+    <input type="text" id="search-input" placeholder="{{ _('search_placeholder') }}" oninput="filterCities()">
+  </div>
+</section>
+
+<section class="cities-section">
+  <h3 class="section-title">{{ _('ou_choisissez') }}</h3>
+  <div class="cities-grid" id="cities-grid">
+    {% for city in cities %}
+    <a href="/city/{{ city.id }}" class="city-card" data-name="{{ city.name|lower }}">
+      <div class="card-image">
+        <img src="{{ city.image|img }}" alt="{{ city.name }}" loading="lazy">
+      </div>
+      <div class="card-body">
+        <h4>{{ city.name }}</h4>
+        {% if city.subtitle %}
+        <p class="card-subtitle">{{ city.subtitle }}</p>
+        {% endif %}
+      </div>
+    </a>
+    {% endfor %}
+  </div>
+  <p id="empty-message" class="empty-message hidden">{{ _('aucune_ville') }}</p>
+</section>
+{% endblock %}

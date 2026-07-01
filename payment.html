@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Paiement - Guide Touristique Maroc</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      min-height: 100vh; display: flex; align-items: center; justify-content: center;
+      background: #0f1a2e;
+    }
+    .card {
+      background: #16213e; border-radius: 12px; padding: 32px;
+      width: 100%; max-width: 480px; border: 1px solid #3ea8da;
+      box-shadow: 0 8px 40px rgba(0,0,0,.5);
+    }
+    .card h1 { color: #fff; font-size: 22px; text-align: center; margin-bottom: 6px; }
+    .card h1 span { color: #3ea8da; }
+    .card p.sub { color: #8899aa; text-align: center; font-size: 13px; margin-bottom: 20px; }
+    .info { margin-bottom: 12px; }
+    .info label { color: #8899aa; font-size: 12px; display: block; margin-bottom: 2px; }
+    .info .val { color: #fff; font-size: 15px; }
+    .total { text-align: center; font-size: 24px; color: #28a745; font-weight: bold; margin: 20px 0; }
+    .btn { display: block; width: 100%; padding: 12px; border: none; border-radius: 6px; font-size: 16px; cursor: pointer; text-align: center; text-decoration: none; }
+    .btn-pay { background: #28a745; color: #fff; margin-top: 12px; }
+    .btn-pay:hover { background: #218838; }
+    .btn-back { background: #3ea8da; color: #fff; margin-top: 10px; display: inline-block; width: auto; padding: 8px 20px; }
+    .btn-back:hover { background: #358fc0; }
+    .status { text-align: center; padding: 8px; border-radius: 6px; font-weight: bold; }
+    .status.accepted { background: #1e3a2e; color: #28a745; border: 1px solid #28a745; }
+    .status.refused { background: #3a1e1e; color: #dc3545; border: 1px solid #dc3545; }
+    .status.pending { background: #3a351e; color: #ffc107; border: 1px solid #ffc107; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Guide Touristique <span>Maroc</span></h1>
+    <p class="sub">Détails de votre réservation</p>
+
+    <div class="status {{ res.status }}">
+      {% if res.status == 'accepted' %}<i class="fas fa-check-circle"></i> Acceptée
+      {% elif res.status == 'refused' %}<i class="fas fa-times-circle"></i> Refusée
+      {% else %}<i class="fas fa-clock"></i> En attente
+      {% endif %}
+    </div>
+
+    <div class="info"><label>Établissement</label><div class="val">{{ res.item_name }}</div></div>
+    <div class="info"><label>Catégorie</label><div class="val">{{ res.category }}</div></div>
+    <div class="info"><label>Ville</label><div class="val">{{ res.city_name }}</div></div>
+    <div class="info"><label>Date d'arrivée</label><div class="val">{{ res.date_res }}</div></div>
+    <div class="info"><label>Nuits</label><div class="val">{{ res.nights }}</div></div>
+    <div class="info"><label>Personnes</label><div class="val">{{ res.persons }}</div></div>
+
+    <div class="total">{{ res.total }} <span style="font-size:14px;color:#8899aa;">MAD</span></div>
+
+    {% if res.status == 'accepted' %}
+    <a href="#" class="btn btn-pay" onclick="alert('Paiement simulé — merci de votre confiance !');return false;">
+      <i class="fas fa-credit-card"></i> Payer maintenant
+    </a>
+    {% endif %}
+
+    <a href="/" class="btn btn-back"><i class="fas fa-arrow-left"></i> Retour au site</a>
+  </div>
+</body>
+</html>

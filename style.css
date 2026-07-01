@@ -1,0 +1,200 @@
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  background: url('/assets/cities/casablanca.png') center/cover fixed no-repeat;
+  color: #e0e0e0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+.container, .site-footer { position: relative; z-index: 1; }
+
+a { color: #3ea8da; text-decoration: none; }
+a:hover { color: #6bc2ed; }
+img { max-width: 100%; display: block; }
+
+.container { max-width: 1200px; margin: 0 auto; padding: 32px 24px; flex: 1; }
+
+/* Hero */
+.hero {
+  text-align: center; padding: 48px 0 24px;
+}
+.hero h1, .hero-maroc, .hero-desc { position: relative; }
+.hero h1 { font-size: 48px; font-weight: 700; color: #fff; }
+.hero-maroc { font-size: 48px; font-weight: 700; color: #3ea8da; margin-top: 2px; }
+.hero-desc { color: #ddd; font-size: 16px; margin-top: 10px; }
+
+/* Search */
+.search-section { text-align: center; padding: 20px 0; }
+.search-wrapper { display: inline-flex; align-items: center; position: relative; max-width: 520px; width: 100%; }
+.search-icon { position: absolute; left: 14px; font-size: 16px; z-index: 1; }
+#search-input {
+  width: 100%; padding: 14px 20px 14px 40px; font-size: 15px;
+  border: 2px solid #2a2a4a; border-radius: 8px;
+  background: #000; color: #e0e0e0; outline: none;
+}
+#search-input:focus { border-color: #3ea8da; }
+
+/* Section title */
+.section-title { font-size: 16px; font-weight: 600; margin: 24px 0 16px; color: #ccc; }
+
+/* City grid */
+.cities-grid { display: grid; gap: 20px; grid-template-columns: repeat(3, 1fr); }
+.city-card {
+  background: transparent; border-radius: 12px; overflow: hidden;
+  border: 2px solid transparent; transition: border-color .2s;
+  color: inherit; position: relative;
+  box-shadow: 0 4px 20px rgba(0,0,0,.6);
+}
+.city-card:hover { border-color: #3ea8da; }
+.card-image {
+  width: 100%; aspect-ratio: 16/10; overflow: hidden; background: transparent;
+}
+.card-image img { width: 100%; height: 100%; object-fit: cover; }
+.card-body {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  padding: 16px;
+  background: rgba(0,0,0,.5);
+}
+.card-body h4 { font-size: 18px; color: #fff; text-align: center; text-shadow: 0 2px 8px rgba(0,0,0,.5); }
+.card-subtitle { color: #ddd; font-size: 13px; margin-top: 4px; text-align: center; text-shadow: 0 1px 4px rgba(0,0,0,.5); }
+
+.empty-message { text-align: center; color: #667; padding: 40px; font-size: 15px; }
+.hidden { display: none; }
+
+/* City layout */
+.city-layout { display: flex; gap: 28px; min-height: 500px; }
+.city-sidebar { width: 220px; flex-shrink: 0; }
+.city-name-header {
+  background: #000; padding: 16px; border-radius: 8px; margin-bottom: 16px;
+}
+.city-name-header h2 { color: #fff; font-size: 18px; text-align: center; }
+.city-nav { display: flex; flex-direction: column; gap: 4px; }
+.nav-btn {
+  background: transparent; border: none; color: #8899aa; font-size: 14px;
+  padding: 10px 14px; text-align: left; border-radius: 6px; cursor: pointer;
+  transition: background .15s, color .15s;
+}
+.nav-btn:hover { background: #16213e; color: #ccc; }
+.nav-btn.active { background: #3ea8da22; color: #3ea8da; font-weight: 600; }
+
+.city-content { flex: 1; min-width: 0; width: 100%; overflow-y: auto; }
+html { overflow-y: scroll; }
+.section-content { display: none; }
+.section-content.active { display: block; }
+.section-heading { font-size: 22px; font-weight: 700; margin-bottom: 18px; color: #fff; }
+
+/* Overview */
+.overview-layout { display: flex; gap: 24px; }
+.overview-info { flex: 1; }
+.city-title { font-size: 34px; font-weight: 700; color: #fff; }
+.city-country { color: #3ea8da; font-size: 14px; margin: 6px 0 12px; display: flex; align-items: center; gap: 4px; }
+.city-subtitle { color: #8899aa; font-style: italic; font-size: 14px; margin-bottom: 10px; }
+.city-desc { font-size: 14px; line-height: 1.7; color: #ccc; }
+.overview-image { width: 45%; flex-shrink: 0; }
+.overview-image img { width: 100%; border-radius: 10px; object-fit: cover; aspect-ratio: 16/9; }
+
+/* Stats */
+.stats-row { display: flex; gap: 12px; margin-top: 24px; }
+.stat-card {
+  flex: 1; background: #000; border: 1px solid #3ea8da; border-radius: 8px; padding: 14px;
+}
+.stat-label { display: block; font-size: 11px; color: #8899aa; margin-bottom: 4px; }
+.stat-value { display: block; font-size: 14px; font-weight: 700; color: #fff; }
+
+/* Item cards */
+.item-card {
+  display: flex; gap: 14px; align-items: center; background: #000; border-radius: 8px;
+  padding: 12px; margin-bottom: 10px; border: 1px solid #3ea8da; transition: border-color .2s, box-shadow .2s;
+}
+.item-card:hover { border-color: #3ea8da; box-shadow: 0 0 12px rgba(62,168,218,.5); }
+.item-thumb { width: 90px; height: 60px; flex-shrink: 0; border-radius: 6px; overflow: hidden; }
+.item-thumb img { width: 100%; height: 100%; object-fit: cover; }
+.item-info { flex: 1; min-width: 0; }
+.item-info h3 { font-size: 15px; font-weight: 700; color: #fff; margin-bottom: 4px; }
+.item-info p { font-size: 13px; color: #8899aa; line-height: 1.5; }
+.stars { color: #fbc44a; font-size: 18px; margin-left: 8px; }
+.transport-card { border-left: 4px solid #5ac482; }
+
+/* Item section icons */
+.item-icon {
+  width: 28px; height: 28px; flex-shrink: 0; border-radius: 50%;
+  display: inline-flex; align-items: center; justify-content: center;
+  opacity: .7;
+}
+.food-icon { background: #fabc44; }
+.bed-icon { background: #3ea8da; }
+.pin-icon { background: #e06060; }
+
+
+/* Empty */
+.empty { color: #667; font-size: 14px; padding: 20px 0; }
+
+/* Chat */
+#chat-button {
+  position: fixed; bottom: 24px; right: 24px; z-index: 9999;
+  width: 56px; height: 56px; min-width: 56px; min-height: 56px;
+  border-radius: 50%;
+  background: #3ea8da; color: #fff; font-size: 26px; line-height: 1;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; box-shadow: 0 4px 16px rgba(0,0,0,.4);
+  transition: transform .2s;
+  box-sizing: border-box;
+}
+#chat-button:hover { transform: scale(1.1); }
+#chat-panel {
+  position: fixed; bottom: 90px; right: 24px; z-index: 9998;
+  width: 340px; height: 440px; background: #1a1a2e;
+  border: 1px solid #3ea8da; border-radius: 12px; display: none;
+  flex-direction: column; overflow: hidden; box-shadow: 0 8px 32px rgba(0,0,0,.5);
+}
+#chat-panel.open { display: flex; }
+#chat-header {
+  background: #0f3460; color: #fff; padding: 12px 16px;
+  font-weight: 700; font-size: 14px;
+}
+#chat-messages {
+  flex: 1; padding: 12px; overflow-y: auto; display: flex;
+  flex-direction: column; gap: 8px;
+}
+.chat-msg {
+  max-width: 85%; padding: 10px 14px; border-radius: 10px;
+  font-size: 13px; line-height: 1.5;
+}
+.chat-msg.bot { background: #16213e; color: #e0e0e0; align-self: flex-start; }
+.chat-msg.user { background: #3ea8da; color: #fff; align-self: flex-end; }
+#chat-input-area {
+  display: flex; padding: 8px; gap: 6px; border-top: 1px solid #2a2a4a;
+}
+#chat-input-area input {
+  flex: 1; padding: 10px; border: 1px solid #2a2a4a; border-radius: 6px;
+  background: #000; color: #e0e0e0; outline: none;
+}
+#chat-input-area button {
+  padding: 10px 16px; background: #3ea8da; color: #fff;
+  border: none; border-radius: 6px; cursor: pointer;
+}
+/* Footer */
+.site-footer {
+  text-align: center; padding: 20px; color: #667; font-size: 13px;
+  border-top: 1px solid #2a2a4a; margin-top: auto;
+}
+
+/* RTL */
+html[dir="rtl"] .search-icon { left: auto; right: 14px; }
+html[dir="rtl"] #search-input { padding: 14px 40px 14px 20px; }
+html[dir="rtl"] .nav-btn { text-align: right; }
+html[dir="rtl"] .stats-row { flex-direction: row-reverse; }
+html[dir="rtl"] .overview-layout { flex-direction: row-reverse; }
+
+/* Responsive */
+@media (max-width: 768px) {
+  .city-layout { flex-direction: column; }
+  .city-sidebar { width: 100%; }
+  .overview-layout { flex-direction: column; }
+  .overview-image { width: 100%; }
+  .stats-row { flex-wrap: wrap; }
+  .stat-card { min-width: calc(50% - 6px); }
+  .cities-grid { grid-template-columns: 1fr; }
+  .hero h1, .hero-maroc { font-size: 28px; }
+}

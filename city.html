@@ -1,0 +1,367 @@
+{% extends "base.html" %}
+{% block title %}{{ city.name }} — {{ _('page_title') }}{% endblock %}
+{% block content %}
+<style>body { background: #000 !important; } body::before { display: none; } .container { max-width: 100% !important; padding: 32px 40px !important; width: 100% !important; } .city-layout { width: 100%; }
+.item-card { flex-wrap: wrap; }
+.reserve-btn {
+  margin-left: auto; padding: 6px 14px; background: #28a745; color: #fff;
+  border: none; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer;
+  white-space: nowrap; transition: background .2s;
+}
+.reserve-btn:hover { background: #218838; }
+@media (max-width: 600px) { .reserve-btn { margin-left: 0; width: 100%; } }
+</style>
+
+<div class="city-layout">
+  <aside class="city-sidebar">
+    <div class="city-name-header">
+      <h2>{{ city.name }}</h2>
+    </div>
+    <nav class="city-nav" id="city-nav">
+      <button class="nav-btn active" data-section="overview" onclick="switchSection('overview')">
+        <i class="fas fa-eye"></i> {{ _('apercu') }}
+      </button>
+      <button class="nav-btn" data-section="restaurants" onclick="switchSection('restaurants')">
+        <i class="fas fa-utensils"></i> {{ _('restaurants_nav') }}
+      </button>
+      <button class="nav-btn" data-section="hotels" onclick="switchSection('hotels')">
+        <i class="fas fa-hotel"></i> {{ _('hotels_nav') }}
+      </button>
+      <button class="nav-btn" data-section="transports" onclick="switchSection('transports')">
+        <i class="fas fa-car"></i> {{ _('transports_nav') }}
+      </button>
+      <button class="nav-btn" data-section="places" onclick="switchSection('places')">
+        <i class="fas fa-landmark"></i> {{ _('lieux_nav') }}
+      </button>
+    </nav>
+  </aside>
+
+  <div class="city-content" id="city-content">
+    <!-- Overview -->
+    <div class="section-content active" id="section-overview">
+      <div class="overview-layout">
+        <div class="overview-info">
+          <h1 class="city-title">{{ city.name }}</h1>
+          <p class="city-country">
+            <span class="icon-pin"></span> {{ _('maroc') }}
+          </p>
+          {% if city.subtitle %}
+          <p class="city-subtitle">{{ city.subtitle }}</p>
+          {% endif %}
+          <p class="city-desc">{{ city.description }}</p>
+        </div>
+        <div class="overview-image">
+          <img src="{{ city.image|img }}" alt="{{ city.name }}">
+        </div>
+      </div>
+      {% if city.stats %}
+      <div class="stats-row">
+        {% set stats_list = [
+          (_('population'), city.stats.population),
+          (_('langue_stat'), city.stats.language),
+          (_('monnaie'), city.stats.currency),
+          (_('climat'), city.stats.climate)
+        ] %}
+        {% for label, value in stats_list %}
+        <div class="stat-card">
+          <span class="stat-label">{{ label }}</span>
+          <span class="stat-value">{{ value or '—' }}</span>
+        </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+    </div>
+
+    <!-- Restaurants -->
+    <div class="section-content" id="section-restaurants">
+      <h2 class="section-heading">{{ _('restaurants_a', name=city.name) }}</h2>
+      {% if city.restaurants %}
+        {% for item in city.restaurants %}
+        <div class="item-card">
+          {% if item.image %}
+          <div class="item-thumb"><img src="{{ item.image|img }}" alt="{{ item.name }}"></div>
+          {% endif %}
+          <div class="item-info">
+            <h3>{{ item.name }}
+              {% if item.stars %}
+              <span class="stars">{{ '★' * item.stars }}{{ '☆' * (5 - item.stars) }}</span>
+              {% endif %}
+            </h3>
+            {% if item.note %}<p>{{ item.note }}</p>{% endif %}
+          </div>
+          <span class="item-icon food-icon"></span>
+          <button class="reserve-btn" data-city="{{ city.id }}" data-cat="restaurant" data-name="{{ item.name|e }}" data-cityname="{{ city.name|e }}" onclick="openReserve(this)">{{ _('reserve_btn') }}</button>
+        </div>
+        {% endfor %}
+      {% else %}
+        <p class="empty">{{ _('aucune_entree') }}</p>
+      {% endif %}
+    </div>
+
+    <!-- Hotels -->
+    <div class="section-content" id="section-hotels">
+      <h2 class="section-heading">{{ _('hotels_a', name=city.name) }}</h2>
+      {% if city.hotels %}
+        {% for item in city.hotels %}
+        <div class="item-card">
+          {% if item.image %}
+          <div class="item-thumb"><img src="{{ item.image|img }}" alt="{{ item.name }}"></div>
+          {% endif %}
+          <div class="item-info">
+            <h3>{{ item.name }}
+              {% if item.stars %}
+              <span class="stars">{{ '★' * item.stars }}{{ '☆' * (5 - item.stars) }}</span>
+              {% endif %}
+            </h3>
+            {% if item.note %}<p>{{ item.note }}</p>{% endif %}
+          </div>
+          <span class="item-icon bed-icon"></span>
+          <button class="reserve-btn" data-city="{{ city.id }}" data-cat="hotel" data-name="{{ item.name|e }}" data-cityname="{{ city.name|e }}" onclick="openReserve(this)">{{ _('reserve_btn') }}</button>
+        </div>
+        {% endfor %}
+      {% else %}
+        <p class="empty">{{ _('aucune_entree') }}</p>
+      {% endif %}
+    </div>
+
+    <!-- Transports -->
+    <div class="section-content" id="section-transports">
+      <h2 class="section-heading">{{ _('transports_a', name=city.name) }}</h2>
+      {% if city.transports %}
+        {% for item in city.transports %}
+        <div class="item-card transport-card">
+          {% if item.image %}
+          <div class="item-thumb"><img src="{{ item.image|img }}" alt="{{ item.name }}"></div>
+          {% endif %}
+          <div class="item-info">
+            <h3>
+              {% set t = item.name|lower %}
+              {% if 'train' in t %}<i class="fas fa-train"></i>{% elif 'tram' in t %}<i class="fas fa-tram"></i>{% elif 'bus' in t %}<i class="fas fa-bus"></i>{% elif 'taxi' in t %}<i class="fas fa-taxi"></i>{% elif 'calèche' in t or 'caleche' in t %}<i class="fas fa-horse"></i>{% else %}<i class="fas fa-car"></i>{% endif %}
+              {{ item.name }}
+            </h3>
+            {% if item.note %}<p>{{ item.note }}</p>{% endif %}
+          </div>
+        </div>
+        {% endfor %}
+      {% else %}
+        <p class="empty">{{ _('aucune_entree') }}</p>
+      {% endif %}
+    </div>
+
+    <!-- Places -->
+    <div class="section-content" id="section-places">
+      <h2 class="section-heading">{{ _('lieux_a', name=city.name) }}</h2>
+      {% if city.places %}
+        {% for item in city.places %}
+        <div class="item-card">
+          {% if item.image %}
+          <div class="item-thumb"><img src="{{ item.image|img }}" alt="{{ item.name }}"></div>
+          {% endif %}
+          <div class="item-info">
+            <h3>{{ item.name }}
+              {% if item.stars %}
+              <span class="stars">{{ '★' * item.stars }}{{ '☆' * (5 - item.stars) }}</span>
+              {% endif %}
+            </h3>
+            {% if item.note %}<p>{{ item.note }}</p>{% endif %}
+          </div>
+          <span class="item-icon pin-icon"></span>
+        </div>
+        {% endfor %}
+      {% else %}
+        <p class="empty">{{ _('aucune_entree') }}</p>
+      {% endif %}
+    </div>
+  </div>
+</div>
+<div style="margin-top: 8px;">
+  <a href="/" style="display: inline-block; border: 2px solid #3ea8da; border-radius: 8px; padding: 10px 24px; color: #3ea8da; font-weight: 600;">{{ _('retour') }}</a>
+</div>
+
+<div id="reserve-modal" onclick="if(event.target===this)closeReserve()" style="display:none;position:fixed;inset:0;z-index:300;background:rgba(0,0,0,.8);align-items:center;justify-content:center;">
+  <div style="background:#16213e;border:1px solid #3ea8da;border-radius:12px;width:100%;max-width:420px;max-height:90vh;display:flex;flex-direction:column;">
+    <h3 style="color:#fff;margin:0;padding:20px 24px 12px;text-align:center;flex-shrink:0;">{{ _('reserve_title') }} — <span id="reserve-item-name" style="color:#3ea8da;"></span></h3>
+    <form id="reserve-form" style="flex:1;overflow-y:auto;padding:0 24px;min-height:0;">
+      <input type="hidden" id="res-city-id">
+      <input type="hidden" id="res-city-name">
+      <input type="hidden" id="res-category">
+      <input type="hidden" id="res-item-name">
+      <div class="form-group"><label style="color:#ccc;font-size:11px;">{{ _('reserve_name') }}</label><input type="text" id="res-name" value="{{ user.first_name }} {{ user.last_name }}" style="width:100%;padding:7px 10px;border:1px solid #2a2a4a;border-radius:6px;background:#111;color:#e0e0e0;font-size:12px;outline:none;"></div>
+      <div class="form-group"><label style="color:#ccc;font-size:11px;">{{ _('reserve_email') }}</label><input type="email" id="res-email" value="{{ user.email }}" style="width:100%;padding:7px 10px;border:1px solid #2a2a4a;border-radius:6px;background:#111;color:#e0e0e0;font-size:12px;outline:none;"></div>
+      <div class="form-group"><label style="color:#ccc;font-size:11px;">{{ _('reserve_phone') }}</label><input type="tel" id="res-phone" value="{{ user.phone }}" style="width:100%;padding:7px 10px;border:1px solid #2a2a4a;border-radius:6px;background:#111;color:#e0e0e0;font-size:12px;outline:none;"></div>
+      <div class="form-group"><label style="color:#ccc;font-size:11px;">{{ _('birthdate') }}</label><input type="date" id="res-birthdate" value="{{ user.birthdate }}" pattern="\d{4}-\d{2}-\d{2}" style="width:100%;padding:7px 10px;border:1px solid #2a2a4a;border-radius:6px;background:#111;color:#e0e0e0;font-size:12px;outline:none;"></div>
+      <div id="res-hotel-fields" style="display:none;">
+        <div class="form-group"><label style="color:#ccc;font-size:11px;">{{ _('reserve_date_res') }}</label><input type="date" id="res-date-res" pattern="\d{4}-\d{2}-\d{2}" style="width:100%;padding:7px 10px;border:1px solid #2a2a4a;border-radius:6px;background:#000;color:#e0e0e0;font-size:12px;outline:none;"></div>
+          <div style="display:flex;gap:8px;">
+          <div class="form-group" style="flex:1;"><label style="color:#ccc;font-size:11px;">{{ _('reserve_nights') }} <span style="color:#8899aa;">(100dh)</span></label><input type="number" id="res-nights" min="1" value="1" oninput="calcTotal()" style="width:100%;padding:7px 10px;border:1px solid #2a2a4a;border-radius:6px;background:#000;color:#e0e0e0;font-size:12px;outline:none;"></div>
+          <div class="form-group" style="flex:1;"><label style="color:#ccc;font-size:11px;">{{ _('reserve_persons') }} <span style="color:#8899aa;">(50dh)</span></label><input type="number" id="res-persons" min="1" value="1" oninput="calcTotal()" style="width:100%;padding:7px 10px;border:1px solid #2a2a4a;border-radius:6px;background:#000;color:#e0e0e0;font-size:12px;outline:none;"></div>
+        </div>
+        <div class="form-group"><label style="color:#ccc;font-size:11px;">{{ _('reserve_total') }}</label><input type="text" id="res-total" readonly style="width:100%;padding:7px 10px;border:1px solid #2a2a4a;border-radius:6px;background:#111;color:#3ea8da;font-size:12px;font-weight:700;outline:none;"></div>
+      </div>
+      <div id="res-restaurant-fields" style="display:none;">
+        <div class="form-group"><label style="color:#ccc;font-size:11px;">{{ _('reserve_date_res') }}</label><input type="date" id="res-date-res-r" pattern="\d{4}-\d{2}-\d{2}" style="width:100%;padding:7px 10px;border:1px solid #2a2a4a;border-radius:6px;background:#000;color:#e0e0e0;font-size:12px;outline:none;"></div>
+        <div style="border:1px solid #2a2a4a;border-radius:8px;padding:10px;margin-bottom:8px;">
+          <h4 style="color:#3ea8da;margin:0 0 6px;font-size:12px;">{{ _('menu_title') }}</h4>
+          {% set menu_items = [
+            {'key': 'pizza', 'name': _('menu_pizza'), 'price': 50},
+            {'key': 'tajin', 'name': _('menu_tajin'), 'price': 60},
+            {'key': 'coscos', 'name': _('menu_coscos'), 'price': 55},
+            {'key': 'rfisa', 'name': _('menu_rfisa'), 'price': 45},
+            {'key': 'tacos', 'name': _('menu_tacos'), 'price': 40},
+            {'key': 'frits', 'name': _('menu_frits'), 'price': 25},
+            {'key': 'orange', 'name': _('menu_orange'), 'price': 20},
+            {'key': 'salads', 'name': _('menu_salads'), 'price': 30},
+          ] %}
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;">
+          {% for item in menu_items %}
+            <div style="display:flex;align-items:center;gap:4px;">
+              <span style="flex:1;color:#e0e0e0;font-size:11px;">{{ item.name }} <span style="color:#8899aa;">({{ item.price }})</span></span>
+              <input type="number" class="menu-qty" data-key="{{ item.key }}" data-price="{{ item.price }}" min="0" max="20" value="0" oninput="calcMenuTotal()" style="width:40px;padding:2px 4px;border:1px solid #2a2a4a;border-radius:3px;background:#000;color:#e0e0e0;font-size:11px;outline:none;text-align:center;">
+            </div>
+          {% endfor %}
+          </div>
+          <div style="text-align:right;color:#5ac482;font-weight:700;font-size:12px;margin-top:4px;">
+            {{ _('reserve_total') }}: <span id="res-total-r">0.00 MAD</span>
+          </div>
+        </div>
+      </div>
+      <div style="display:flex;gap:8px;padding:8px 0 20px;flex-shrink:0;position:sticky;bottom:0;background:#16213e;">
+        <button type="button" onclick="submitReserve()" style="flex:1;padding:9px;background:#28a745;color:#fff;border:none;border-radius:6px;font-weight:700;cursor:pointer;font-size:12px;">{{ _('reserve_submit') }}</button>
+        <button type="button" onclick="closeReserve()" style="padding:9px 16px;background:transparent;color:#8899aa;border:1px solid #2a2a4a;border-radius:6px;cursor:pointer;font-size:12px;">{{ _('fermer') }}</button>
+      </div>
+    </form>
+    <div id="reserve-msg" style="display:none;text-align:center;padding:20px;color:#5ac482;font-size:14px;"></div>
+  </div>
+</div>
+
+<script>
+function openReserve(btn) {
+  var cityId = btn.getAttribute('data-city');
+  var category = btn.getAttribute('data-cat');
+  var itemName = btn.getAttribute('data-name');
+  document.getElementById('res-city-id').value = cityId;
+  document.getElementById('res-city-name').value = btn.getAttribute('data-cityname');
+  document.getElementById('res-category').value = category;
+  document.getElementById('res-item-name').value = itemName;
+  document.getElementById('reserve-item-name').textContent = itemName;
+  document.getElementById('reserve-form').style.display = '';
+  document.getElementById('reserve-msg').style.display = 'none';
+  document.getElementById('reserve-modal').style.display = 'flex';
+  var h = document.getElementById('res-hotel-fields');
+  var r = document.getElementById('res-restaurant-fields');
+  if (category === 'hotel') {
+    h.style.display = '';
+    r.style.display = 'none';
+    calcTotal();
+  } else {
+    h.style.display = 'none';
+    r.style.display = '';
+    calcMenuTotal();
+  }
+}
+function closeReserve() {
+  document.getElementById('reserve-modal').style.display = 'none';
+}
+function calcTotal() {
+  var nights = parseInt(document.getElementById('res-nights').value) || 0;
+  var persons = parseInt(document.getElementById('res-persons').value) || 0;
+  var total = (nights * 100) + (persons * 50);
+  document.getElementById('res-total').value = total.toFixed(2) + ' MAD';
+}
+function calcMenuTotal() {
+  var total = 0;
+  var qtyInputs = document.querySelectorAll('#res-restaurant-fields .menu-qty');
+  for (var i = 0; i < qtyInputs.length; i++) {
+    var qty = parseInt(qtyInputs[i].value) || 0;
+    var price = parseFloat(qtyInputs[i].getAttribute('data-price')) || 0;
+    total += qty * price;
+  }
+  document.getElementById('res-total-r').textContent = total.toFixed(2) + ' MAD';
+}
+function showMsg(txt, err) {
+  var m = document.getElementById('reserve-msg');
+  m.textContent = txt;
+  m.style.color = err ? '#dc3545' : '#5ac482';
+  m.style.display = 'block';
+}
+function submitReserve() {
+  var m = document.getElementById('reserve-msg');
+  m.style.display = 'none';
+  var cat = document.getElementById('res-category').value;
+  var ok = true;
+  var err = '';
+  if (cat === 'hotel') {
+    var n = parseInt(document.getElementById('res-nights').value) || 0;
+    var p = parseInt(document.getElementById('res-persons').value) || 0;
+    var d = document.getElementById('res-date-res').value;
+    if (!d) { ok = false; err = '{{ _('reserve_enter_date') }}'; }
+    else if (n < 1) { ok = false; err = '{{ _('reserve_err_nights') }}'; }
+    else if (p < 1) { ok = false; err = '{{ _('reserve_err_persons') }}'; }
+    else if (p === 1 && n >= 9) { ok = false; err = '{{ _('reserve_err_1p9n') }}'; }
+    if (!ok) { showMsg(err, true); return false; }
+  } else {
+    var d = document.getElementById('res-date-res-r').value;
+    if (!d) { showMsg('{{ _('reserve_enter_date') }}', true); return false; }
+    var qs = document.querySelectorAll('#res-restaurant-fields .menu-qty');
+    var hasItem = false;
+    for (var i = 0; i < qs.length; i++) {
+      if ((parseInt(qs[i].value) || 0) > 0) { hasItem = true; break; }
+    }
+    if (!hasItem) { showMsg('{{ _('reserve_err_menu') }}', true); return false; }
+  }
+  var extra = {};
+  if (cat === 'hotel') {
+    extra = {
+      date_res: document.getElementById('res-date-res').value,
+      nights: document.getElementById('res-nights').value,
+      persons: document.getElementById('res-persons').value,
+      total: document.getElementById('res-total').value,
+      menu_items: ''
+    };
+  } else {
+    var items = [];
+    var qs = document.querySelectorAll('#res-restaurant-fields .menu-qty');
+    for (var i = 0; i < qs.length; i++) {
+      var qty = parseInt(qs[i].value) || 0;
+      if (qty > 0) items.push({key: qs[i].getAttribute('data-key'), qty: qty});
+    }
+    extra = {
+      date_res: document.getElementById('res-date-res-r').value,
+      nights: '',
+      persons: '',
+      total: document.getElementById('res-total-r').textContent,
+      menu_items: JSON.stringify(items)
+    };
+  }
+  var data = {
+    city_id: document.getElementById('res-city-id').value,
+    city_name: document.getElementById('res-city-name').value,
+    category: cat,
+    item_name: document.getElementById('res-item-name').value,
+    name: document.getElementById('res-name').value,
+    email: document.getElementById('res-email').value,
+    phone: document.getElementById('res-phone').value,
+    birthdate: document.getElementById('res-birthdate').value,
+    date_res: extra.date_res,
+    nights: extra.nights,
+    persons: extra.persons,
+    total: extra.total,
+    menu_items: extra.menu_items,
+  };
+  fetch('/api/reserve', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify(data)
+  }).then(function(r){
+    return r.json().then(function(d){ return {s: r.status, b: d}; });
+  }).then(function(res){
+    if (res.s === 200) {
+      document.getElementById('reserve-form').style.display = 'none';
+      showMsg('{{ _('reserve_success') }}', false);
+    } else {
+      showMsg(res.b.error || '{{ _('reserve_error') }}', true);
+    }
+  }).catch(function(){ showMsg('{{ _('reserve_error') }}', true); });
+}
+</script>
+{% endblock %}

@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="{{ lang }}" dir="{{ dir_ }}">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ _('signup_title') }}</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      min-height: 100vh; display: flex; align-items: center; justify-content: center;
+      background: url('/assets/cities/bahiya.jpg') center/cover fixed no-repeat;
+    }
+    body::before {
+      content: ''; position: fixed; inset: 0;
+      background: rgba(0,0,0,.6); z-index: 0;
+    }
+    .signup-card {
+      position: relative; z-index: 1;
+      background: #16213e; border-radius: 12px; padding: 28px 28px;
+      width: 100%; max-width: 360px; border: 1px solid #3ea8da;
+      box-shadow: 0 8px 40px rgba(0,0,0,.5);
+      transition: min-height .3s;
+    }
+    .signup-card h1 { color: #fff; font-size: 20px; text-align: center; margin-bottom: 2px; }
+    .signup-card h1 span { color: #3ea8da; }
+    .signup-card p.sub { color: #8899aa; text-align: center; font-size: 12px; margin: 2px 0 16px; }
+    .form-group { margin-bottom: 10px; }
+    .form-group label { display: block; color: #ccc; font-size: 12px; margin-bottom: 2px; }
+    .form-group input {
+      width: 100%; padding: 8px 12px; border: 1px solid #2a2a4a; border-radius: 6px;
+      background: #000; color: #e0e0e0; font-size: 13px; outline: none;
+    }
+    .form-group input:focus { border-color: #3ea8da; }
+    .btn-sign {
+      width: 100%; padding: 10px; background: #3ea8da; color: #fff;
+      border: none; border-radius: 6px; font-size: 14px; font-weight: 700;
+      cursor: pointer; margin-top: 4px; transition: background .2s;
+    }
+    .btn-sign:hover { background: #2d8ec0; }
+    .admin-btn-top {
+      position: fixed; top: 16px; right: 16px; z-index: 100;
+      background: rgba(22,33,62,.85); border: 1px solid #3ea8da; border-radius: 6px;
+      color: #3ea8da; padding: 6px 14px; font-size: 12px; font-weight: 600;
+      cursor: pointer; transition: all .2s;
+    }
+    .admin-btn-top:hover { background: #3ea8da; color: #fff; }
+    .form-section { display: block; }
+    .form-section.hidden { display: none; }
+    .link-back {
+      display: block; text-align: center; color: #3ea8da; font-size: 12px;
+      cursor: pointer; margin-top: 12px; text-decoration: none;
+    }
+    .link-back:hover { text-decoration: underline; }
+    .err-msg { color: #e06060; font-size: 12px; margin-bottom: 8px; display: none; text-align: center; }
+  </style>
+</head>
+<body>
+  <button class="admin-btn-top" onclick="showAdmin()">Admin</button>
+  <div class="signup-card">
+    {% if error %}
+    <div style="background:#3a1e1e;border:1px solid #dc3545;color:#dc3545;padding:10px 16px;border-radius:6px;margin-bottom:12px;text-align:center;font-size:13px;">{{ error }}</div>
+    {% endif %}
+    <!-- Signup form -->
+    <div id="form-signup" class="form-section {% if show_login %}hidden{% endif %}">
+      <h1>{{ _('guide_touristique') }} <span>{{ _('maroc') }}</span></h1>
+      <p class="sub">{{ _('create_account') }}</p>
+      <form action="/signin" method="POST">
+        <input type="hidden" name="form" value="signup">
+        <div class="form-group">
+          <label>{{ _('prenom') }}</label>
+          <input type="text" name="first_name" pattern="[A-Za-zÀ-ÿ\s\-]{2,30}" title="{{ _('err_prenom_numbers') }}" required>
+        </div>
+        <div class="form-group">
+          <label>{{ _('nom') }}</label>
+          <input type="text" name="last_name" pattern="[A-Za-zÀ-ÿ\s\-]{2,30}" title="{{ _('err_nom_numbers') }}" required>
+        </div>
+        <div class="form-group">
+          <label>{{ _('email') }}</label>
+          <input type="email" name="email" pattern="[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$" title="{{ _('email_title') }}" required>
+        </div>
+        <div class="form-group">
+          <label>{{ _('mot_de_passe') }}</label>
+          <input type="password" name="password" minlength="4" required>
+        </div>
+        <div class="form-group">
+          <label>{{ _('pays') }}</label>
+          <input type="text" name="country" pattern="[A-Za-zÀ-ÿ\s\-]{2,}" title="{{ _('err_pays_numbers') }}" required>
+        </div>
+        <div class="form-group">
+          <label>{{ _('tel') }}</label>
+          <input type="tel" name="phone" pattern="[\+\d\s\-\(\)]{7,20}" title="{{ _('err_phone_letters') }}">
+        </div>
+        <div class="form-group">
+          <label>{{ _('birthdate') }}</label>
+          <input type="date" name="birthdate" pattern="\d{4}-\d{2}-\d{2}" title="{{ _('birthdate_title') }}" required>
+        </div>
+        <button type="submit" class="btn-sign">{{ _('sinscrire') }}</button>
+      </form>
+      <a class="link-back" onclick="showLogin()">{{ _('signup_link_login') }}</a>
+    </div>
+    <!-- Login form -->
+    <div id="form-login" class="form-section {% if not show_login %}hidden{% endif %}">
+      <h1>{{ _('guide_touristique') }} <span>{{ _('maroc') }}</span></h1>
+      <p class="sub">{{ _('login_title') }}</p>
+      <form action="/signin" method="POST">
+        <input type="hidden" name="form" value="login">
+        <div class="form-group">
+          <label>{{ _('email') }}</label>
+          <input type="email" name="email" pattern="[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$" required>
+        </div>
+        <div class="form-group">
+          <label>{{ _('mot_de_passe') }}</label>
+          <input type="password" name="password" minlength="4" required>
+        </div>
+        <button type="submit" class="btn-sign" style="background:#28a745;">{{ _('login_btn') }}</button>
+      </form>
+      <a class="link-back" onclick="showSignup()">{{ _('login_back_signup') }}</a>
+    </div>
+    <!-- Admin login form -->
+    <div id="form-admin" class="form-section hidden">
+      <h1>Admin <span>Connexion</span></h1>
+      <p class="sub">Espace administrateur</p>
+      <div class="err-msg" id="admin-err">Identifiants incorrects</div>
+      <div class="form-group">
+        <label>Nom d'utilisateur</label>
+        <input type="text" id="admin-user" placeholder="admin">
+      </div>
+      <div class="form-group">
+        <label>Mot de passe</label>
+        <input type="password" id="admin-pass" placeholder="••••••">
+      </div>
+      <button class="btn-sign" style="background:#28a745;" onclick="adminLogin()">Se connecter</button>
+      <a class="link-back" onclick="showSignup()">Retour à l'inscription</a>
+    </div>
+  </div>
+  <script>
+    function showLogin() {
+      document.getElementById('form-signup').classList.add('hidden');
+      document.getElementById('form-login').classList.remove('hidden');
+    }
+    function showSignup() {
+      document.getElementById('form-login').classList.add('hidden');
+      document.getElementById('form-admin').classList.add('hidden');
+      document.getElementById('form-signup').classList.remove('hidden');
+    }
+    function showAdmin() {
+      document.getElementById('form-signup').classList.add('hidden');
+      document.getElementById('form-admin').classList.remove('hidden');
+      document.getElementById('admin-err').style.display = 'none';
+    }
+    function adminLogin() {
+      var user = document.getElementById('admin-user').value;
+      var pass = document.getElementById('admin-pass').value;
+      fetch('/api/admin/login', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({username: user, password: pass})
+      }).then(function(r){ return r.json(); }).then(function(d){
+        if (d.ok) { window.location.href = '/admin/dashboard'; }
+        else { document.getElementById('admin-err').style.display = 'block'; }
+      });
+    }
+    document.getElementById('admin-pass').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') adminLogin();
+    });
+  </script>
+</body>
+</html>
