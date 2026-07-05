@@ -333,7 +333,7 @@ def add_user(data):
         return {"id": cursor.lastrowid}
     except mysql.connector.Error as e:
         log.error(f"add_user error: {e}")
-        return None
+        raise
     finally:
         _close(cursor, conn)
 

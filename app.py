@@ -170,10 +170,14 @@ def signin():
         "birthdate": bd,
         "password": generate_password_hash(password),
     }
-    saved = database.add_user(user_data)
-    if not saved:
-        audit.warning(f"REGISTER FAILED (duplicate) | {email}")
-        return render_template("signup.html", error=translate("signup_err_exists"), show_login=True)
+    try:
+        saved = database.add_user(user_data)
+    except mysql.connector.Error as e:
+        if e.errno == 1062:
+            audit.warning(f"REGISTER FAILED (duplicate) | {email}")
+            return render_template("signup.html", error=translate("signup_err_exists"), show_login=True)
+        log.error(f"REGISTER DB ERROR | {email} | {e}")
+        return render_template("signup.html", error=translate("signup_err_db"), show_login=False)
     audit.info(f"REGISTER | {email}")
     user_data["id"] = saved.get("id")
     session["user"] = user_data
