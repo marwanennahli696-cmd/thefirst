@@ -19,6 +19,31 @@ def _connect():
             database=config.MYSQL_DB,
         )
     except mysql.connector.Error as e:
+        if e.errno == 1049:  # Unknown database
+            # Try connecting without database to create it
+            try:
+                temp_conn = mysql.connector.connect(
+                    host=config.MYSQL_HOST,
+                    port=config.MYSQL_PORT,
+                    user=config.MYSQL_USER,
+                    password=config.MYSQL_PASS,
+                )
+                cursor = temp_conn.cursor()
+                cursor.execute(f"CREATE DATABASE IF NOT EXISTS `{config.MYSQL_DB}`")
+                temp_conn.commit()
+                cursor.close()
+                temp_conn.close()
+                # Now connect with database
+                return mysql.connector.connect(
+                    host=config.MYSQL_HOST,
+                    port=config.MYSQL_PORT,
+                    user=config.MYSQL_USER,
+                    password=config.MYSQL_PASS,
+                    database=config.MYSQL_DB,
+                )
+            except mysql.connector.Error as e2:
+                log.error(f"Failed to create database: {e2}")
+                return None
         log.error(f"Connection error: {e}")
         return None
 

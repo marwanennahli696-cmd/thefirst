@@ -178,6 +178,8 @@ def signin():
             return render_template("signup.html", error=translate("signup_err_exists"), show_login=True)
         log.error(f"REGISTER DB ERROR | {email} | {e}")
         return render_template("signup.html", error=translate("signup_err_db"), show_login=False)
+    if not saved:
+        return render_template("signup.html", error=translate("signup_err_db"), show_login=False)
     audit.info(f"REGISTER | {email}")
     user_data["id"] = saved.get("id")
     session["user"] = user_data
