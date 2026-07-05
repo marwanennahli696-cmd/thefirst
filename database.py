@@ -649,9 +649,7 @@ def delete_item(city_id: str, section: str, idx: int) -> bool:
 def add_reservation(res):
     conn = _connect()
     if not conn:
-        res["id"] = 0
-        res["status"] = "pending"
-        return res
+        return None
     cursor = None
     try:
         cursor = conn.cursor()
@@ -676,9 +674,7 @@ def add_reservation(res):
         return res
     except mysql.connector.Error as e:
         log.error(f"add_reservation error: {e}")
-        res["id"] = 0
-        res["status"] = "pending"
-        return res
+        return None
     finally:
         _close(cursor, conn)
 

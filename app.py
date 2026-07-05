@@ -546,6 +546,9 @@ def api_reserve():
         "created_at": datetime.now().isoformat(),
     }
     saved = database.add_reservation(res)
+    if not saved:
+        audit.warning(f"RESERVATION FAILED | {data.get('email')}")
+        return jsonify({"error": translate("reserve_error")}), 500
     audit.info(f"NEW RESERVATION | {saved.get('id')} | {data.get('item_name')} ({data.get('category')}) | {data.get('city_name')} | {data.get('email')}")
     return jsonify({"ok": True, "id": saved.get("id")})
 
