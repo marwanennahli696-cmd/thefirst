@@ -136,7 +136,7 @@ def _default_cities():
             "stats": {"population": "3,7 millions", "language": "Arabe, Berbère, Français", "currency": "MAD", "climate": "Tempéré côtier"},
             "location": {"lat": 33.5731, "lng": -7.5898},
             "restaurants": [
-                {"name": "Le Cabestan", "image": "assets/cities/cabestan.png", "note": "Cuisine marocaine traditionnelle.", "stars": 5},
+                {"name": "Le Cabestan", "image": "assets/cities/caebestan.png", "note": "Cuisine marocaine traditionnelle.", "stars": 5},
                 {"name": "Rick's Café", "image": "assets/cities/rickscafe.png", "note": "Ambiance inspirée du film Casablanca.", "stars": 4},
                 {"name": "La Sqala", "image": "assets/cities/sqala.jpg", "note": "Cuisine marocaine raffinée.", "stars": 4},
             ],
@@ -179,7 +179,7 @@ def _default_cities():
                 {"name": "Taxi", "image": "assets/cities/rabat.png", "note": "Petits et grands taxis"},
             ],
             "places": [
-                {"name": "Jemaa el-Fna", "image": "assets/cities/jemaa.jpg", "note": "Place animée célèbre dans le monde.", "stars": 5},
+                {"name": "Jemaa el-Fna", "image": "assets/cities/alfna.jpg", "note": "Place animée célèbre dans le monde.", "stars": 5},
                 {"name": "Jardin Majorelle", "image": "assets/cities/jardin.jpg", "note": "Jardin botanique exotique.", "stars": 5},
                 {"name": "Palais de la Bahia", "image": "assets/cities/bahiya.jpg", "note": "Palais royal moderne.", "stars": 4},
             ],
@@ -244,7 +244,7 @@ def _default_cities():
             "location": {"lat": 31.5085, "lng": -9.7595},
             "restaurants": [
                 {"name": "Le Mandala", "image": "assets/cities/mandarine.jpg", "note": "Cuisine marocaine traditionnelle.", "stars": 4},
-                {"name": "L'Atelier", "image": "assets/cities/atlant.jpg", "note": "Cuisine raffinée et produits locaux.", "stars": 4},
+                {"name": "L'Atelier", "image": "assets/cities/atlantic.jpg", "note": "Cuisine raffinée et produits locaux.", "stars": 4},
             ],
             "hotels": [
                 {"name": "Sofitel Essaouira Mogador Golf & Spa", "image": "assets/cities/sofitel.jpg", "note": "Hôtel de luxe face à l'océan.", "stars": 5},
@@ -297,7 +297,7 @@ def _default_cities():
                 {"name": "Maison Bleue", "image": "assets/cities/bleu.jpg", "note": "Palais restauré avec fresques.", "stars": 5},
             ],
             "hotels": [
-                {"name": "Palais Amani", "image": "assets/cities/palace.jpg", "note": "Palais restauré avec fresques.", "stars": 5},
+                {"name": "Palais Amani", "image": "assets/cities/riad2.jpg", "note": "Palais restauré avec fresques.", "stars": 5},
                 {"name": "Riad Laaroussa", "image": "assets/cities/riad2.jpg", "note": "Riad authentique et luxueux.", "stars": 5},
             ],
             "transports": [
@@ -319,12 +319,12 @@ def _default_cities():
             "stats": {"population": "1 million", "language": "Arabe, Berbère, Français, Espagnol, Anglais", "currency": "MAD", "climate": "Méditerranéen"},
             "location": {"lat": 35.7673, "lng": -5.7998},
             "restaurants": [
-                {"name": "Le Saveur du Poisson", "image": "assets/cities/poisson.jpg", "note": "Cuisine de poisson frais.", "stars": 4},
+                {"name": "Le Saveur du Poisson", "image": "assets/cities/dhow.jpg", "note": "Cuisine de poisson frais.", "stars": 4},
                 {"name": "Dar Naji", "image": "assets/cities/dinarjat.jpg", "note": "Cuisine marocaine traditionnelle.", "stars": 4},
             ],
             "hotels": [
-                {"name": "El Minzah Hotel", "image": "assets/cities/hotel.jpg", "note": "Hôtel de luxe historique.", "stars": 5},
-                {"name": "Hilton Tanger City Center", "image": "assets/cities/hotel.jpg", "note": "Hôtel moderne centre-ville.", "stars": 5},
+                {"name": "El Minzah Hotel", "image": "assets/cities/sofitel.jpg", "note": "Hôtel de luxe historique.", "stars": 5},
+                {"name": "Hilton Tanger City Center", "image": "assets/cities/sofitel1.jpg", "note": "Hôtel moderne centre-ville.", "stars": 5},
             ],
             "transports": [
                 {"name": "Train (ONCF)", "image": "assets/cities/rabat.png", "note": "ONCF (LGV Al Boraq)"},
