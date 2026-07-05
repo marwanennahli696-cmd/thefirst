@@ -146,9 +146,10 @@ def _default_cities():
                 {"name": "Sofitel Casablanca Tour Blanche", "image": "assets/cities/sofitel.jpg", "note": "Hôtel 5 étoiles spa.", "stars": 5},
             ],
             "transports": [
-                {"name": "Train (ONCF)", "note": "ONCF"},
+                {"name": "Train (ONCF)", "note": "Réseau ferroviaire national"},
                 {"name": "Tramway", "note": "T1, T2, T3, T4"},
-                {"name": "Bus", "note": "Busway"},
+                {"name": "Bus", "note": "ALSA"},
+                {"name": "Busway", "note": "BH1, BH2"},
             ],
             "places": [
                 {"name": "Mosquée Hassan II", "image": "assets/cities/hassan2.jpg", "note": "Grande mosquée au bord de l'océan.", "stars": 5},
@@ -194,10 +195,12 @@ def _default_cities():
             "restaurants": [
                 {"name": "Le Dhow", "image": "assets/cities/dhow.jpg", "note": "Cuisine marocaine traditionnelle.", "stars": 5},
                 {"name": "Yamal Acham", "image": "assets/cities/sofitelrabat.jpg", "note": "Spécialités syriennes et libanaises.", "stars": 4},
+                {"name": "La Scala", "image": "assets/cities/scala.jpg", "note": "Cuisine italienne et méditerranéenne.", "stars": 4},
             ],
             "hotels": [
                 {"name": "Sofitel Rabat Jardin des Roses", "image": "assets/cities/sofitel1.jpg", "note": "Hôtel 5 étoiles spa.", "stars": 5},
                 {"name": "La Tour Hassan Palace", "image": "assets/cities/hassan.jpg", "note": "Palace historique.", "stars": 5},
+                {"name": "Hotel Balima", "image": "assets/cities/balima.jpg", "note": "Hôtel moderne centre-ville.", "stars": 4},
             ],
             "transports": [
                 {"name": "Train (ONCF)", "note": "ONCF"},
@@ -220,14 +223,17 @@ def _default_cities():
             "restaurants": [
                 {"name": "Le Jardin d'Eau", "image": "assets/cities/sofitel1.jpg", "note": "Cuisine marocaine traditionnelle.", "stars": 4},
                 {"name": "Pure Passion", "image": "assets/cities/passion.jpg", "note": "Cuisine internationale et fruits de mer.", "stars": 5},
+                {"name": "Le Nil Bleu", "image": "assets/cities/nilbleu.jpg", "note": "Poissons et fruits de mer frais.", "stars": 4},
             ],
             "hotels": [
                 {"name": "Sofitel Agadir Thalassa Sea & Spa", "image": "assets/cities/sofitel.jpg", "note": "Hôtel de luxe face à l'océan.", "stars": 5},
                 {"name": "Hotel Club Les Orangers", "image": "assets/cities/plage.jpg", "note": "Station balnéaire populaire.", "stars": 4},
+                {"name": "Riad Ocean Agadir", "image": "assets/cities/atlantic.jpg", "note": "Riad moderne avec piscine.", "stars": 4},
             ],
             "transports": [
                 {"name": "Bus", "note": "ALSA"},
                 {"name": "Taxi", "note": "Petits et grands taxis"},
+                {"name": "Calèche", "note": "Balade en bord de mer"},
             ],
             "places": [
                 {"name": "Plage d'Agadir", "image": "assets/cities/plage.jpg", "note": "Plage de sable fin très fréquentée.", "stars": 5},
@@ -245,14 +251,17 @@ def _default_cities():
             "restaurants": [
                 {"name": "Le Mandala", "image": "assets/cities/mandarine.jpg", "note": "Cuisine marocaine traditionnelle.", "stars": 4},
                 {"name": "L'Atelier", "image": "assets/cities/atlantic.jpg", "note": "Cuisine raffinée et produits locaux.", "stars": 4},
+                {"name": "Le Bleu", "image": "assets/cities/bleu.jpg", "note": "Café-restaurant vue sur mer.", "stars": 3},
             ],
             "hotels": [
                 {"name": "Sofitel Essaouira Mogador Golf & Spa", "image": "assets/cities/sofitel.jpg", "note": "Hôtel de luxe face à l'océan.", "stars": 5},
                 {"name": "Riad Balima", "image": "assets/cities/balima.jpg", "note": "Riad authentique et luxueux.", "stars": 4},
+                {"name": "Le Méridien Essaouira", "image": "assets/cities/sofitel1.jpg", "note": "Hôtel avec vue sur l'océan.", "stars": 4},
             ],
             "transports": [
                 {"name": "Bus", "note": "ALSA"},
                 {"name": "Taxi", "note": "Petits et grands taxis"},
+                {"name": "Calèche", "note": "Visite de la médina"},
             ],
             "places": [
                 {"name": "Médina d'Essaouira", "image": "assets/cities/swira.jpg", "note": "Ville historique fortifiée et préservée.", "stars": 5},
@@ -270,14 +279,17 @@ def _default_cities():
             "restaurants": [
                 {"name": "Beldi Bab Ssour", "image": "assets/cities/bab.jpg", "note": "Cuisine marocaine traditionnelle.", "stars": 4},
                 {"name": "Café Haba", "image": "assets/cities/bleu.jpg", "note": "Terrasse avec vue imprenable.", "stars": 4},
+                {"name": "Restaurant Chaouen", "image": "assets/cities/montan.jpg", "note": "Cuisine locale et montagnarde.", "stars": 3},
             ],
             "hotels": [
                 {"name": "Riad Hicham", "image": "assets/cities/riad2.jpg", "note": "Riad traditionnel avec patio.", "stars": 4},
                 {"name": "Hotel Barcelona", "image": "assets/cities/kasbah1.jpg", "note": "Hôtel de charme.", "stars": 3},
+                {"name": "Casa Hassan", "image": "assets/cities/bab.jpg", "note": "Maison d'hôtes traditionnelle.", "stars": 4},
             ],
             "transports": [
                 {"name": "Bus", "note": "CTM / Supratours"},
                 {"name": "Taxi", "note": "Petits taxis"},
+                {"name": "Calèche", "note": "Visite de la ville bleue"},
             ],
             "places": [
                 {"name": "Médina bleue", "image": "assets/cities/bleu.jpg", "note": "Ruelles pittoresques de la médina.", "stars": 5},
@@ -295,10 +307,12 @@ def _default_cities():
             "restaurants": [
                 {"name": "Riad Fès", "image": "assets/cities/riad.jpg", "note": "Cuisine marocaine raffinée.", "stars": 5},
                 {"name": "Maison Bleue", "image": "assets/cities/lejardin.jpg", "note": "Palais restauré avec fresques.", "stars": 5},
+                {"name": "Restaurant Al Fassia", "image": "assets/cities/alfna.jpg", "note": "Cuisine traditionnelle fassie.", "stars": 4},
             ],
             "hotels": [
                 {"name": "Palais Amani", "image": "assets/cities/riad2.jpg", "note": "Palais restauré avec fresques.", "stars": 5},
                 {"name": "Riad Laaroussa", "image": "assets/cities/riad2.jpg", "note": "Riad authentique et luxueux.", "stars": 5},
+                {"name": "Hotel Sahrai", "image": "assets/cities/fes1.jpg", "note": "Hôtel moderne avec vue panoramique.", "stars": 4},
             ],
             "transports": [
                 {"name": "Train (ONCF)", "note": "ONCF"},
@@ -321,10 +335,12 @@ def _default_cities():
             "restaurants": [
                 {"name": "Le Saveur du Poisson", "image": "assets/cities/dhow.jpg", "note": "Cuisine de poisson frais.", "stars": 4},
                 {"name": "Dar Naji", "image": "assets/cities/dinarjat.jpg", "note": "Cuisine marocaine traditionnelle.", "stars": 4},
+                {"name": "El Tangerino", "image": "assets/cities/haddo.jpg", "note": "Cuisine méditerranéenne.", "stars": 4},
             ],
             "hotels": [
                 {"name": "El Minzah Hotel", "image": "assets/cities/sofitel.jpg", "note": "Hôtel de luxe historique.", "stars": 5},
                 {"name": "Hilton Tanger City Center", "image": "assets/cities/sofitel1.jpg", "note": "Hôtel moderne centre-ville.", "stars": 5},
+                {"name": "Hotel Continental", "image": "assets/cities/tange.jpg", "note": "Hôtel historique face au port.", "stars": 4},
             ],
             "transports": [
                 {"name": "Train (ONCF)", "note": "ONCF (LGV Al Boraq)"},
@@ -347,14 +363,17 @@ def _default_cities():
             "restaurants": [
                 {"name": "Chez Julia", "image": "assets/cities/chebbi.jpg", "note": "Cuisine marocaine traditionnelle.", "stars": 4},
                 {"name": "Riad Erg Chebbi", "image": "assets/cities/chebbi.jpg", "note": "Cuisine marocaine raffinée.", "stars": 4},
+                {"name": "Restaurant Sahara", "image": "assets/cities/chemeau.jpg", "note": "Spécialités nomades.", "stars": 3},
             ],
             "hotels": [
                 {"name": "Kasbah Erg Chebbi", "image": "assets/cities/chebbi.jpg", "note": "Hébergement chez l'habitant.", "stars": 4},
                 {"name": "Auberge du Désert", "image": "assets/cities/chemeau.jpg", "note": "Excursions en 4x4 et balade à dromadaire.", "stars": 3},
+                {"name": "Riad Sahara Merzouga", "image": "assets/cities/nomad.jpg", "note": "Hôtel traditionnel face aux dunes.", "stars": 4},
             ],
             "transports": [
                 {"name": "Bus", "note": "CTM / Supratours"},
                 {"name": "4x4", "note": "Excursions 4x4"},
+                {"name": "Dromadaire", "note": "Balade à dos de dromadaire"},
             ],
             "places": [
                 {"name": "Erg Chebbi", "image": "assets/cities/chebbi.jpg", "note": "Dunes de sable spectaculaires.", "stars": 5},
@@ -372,14 +391,17 @@ def _default_cities():
             "restaurants": [
                 {"name": "La Kasbah", "image": "assets/cities/kasbah.jpg", "note": "Cuisine marocaine traditionnelle.", "stars": 4},
                 {"name": "Le Petit Riad", "image": "assets/cities/riad2.jpg", "note": "Cuisine raffinée.", "stars": 4},
+                {"name": "Restaurant Atlas", "image": "assets/cities/atlas.jpg", "note": "Cuisine berbère et internationale.", "stars": 4},
             ],
             "hotels": [
                 {"name": "Kasbah de Ouarzazate", "image": "assets/cities/kasbahh.jpg", "note": "Kasbah historique en brique crue.", "stars": 4},
                 {"name": "Hotel La Gazelle", "image": "assets/cities/kasbah1.jpg", "note": "Hôtel de charme.", "stars": 4},
+                {"name": "Riad Salam Ouarzazate", "image": "assets/cities/ouarzazate.png", "note": "Hôtel traditionnel avec piscine.", "stars": 4},
             ],
             "transports": [
                 {"name": "Bus", "note": "CTM / Supratours"},
                 {"name": "Taxi", "note": "Grands taxis"},
+                {"name": "Calèche", "note": "Visite des kasbahs"},
             ],
             "places": [
                 {"name": "Kasbah Aït Ben Haddou", "image": "assets/cities/kasbahh.jpg", "note": "Village fortifié (ksar) historique.", "stars": 5},
