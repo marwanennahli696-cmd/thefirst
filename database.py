@@ -146,9 +146,9 @@ def _default_cities():
                 {"name": "Sofitel Casablanca Tour Blanche", "image": "assets/cities/sofitel.jpg", "note": "Hôtel 5 étoiles spa.", "stars": 5},
             ],
             "transports": [
-                {"name": "Train (ONCF)", "image": "assets/cities/rabat.png", "note": "ONCF"},
-                {"name": "Tramway", "image": "assets/cities/rabat.png", "note": "T1, T2, T3, T4"},
-                {"name": "Bus", "image": "assets/cities/rabat.png", "note": "Busway"},
+                {"name": "Train (ONCF)", "note": "ONCF"},
+                {"name": "Tramway", "note": "T1, T2, T3, T4"},
+                {"name": "Bus", "note": "Busway"},
             ],
             "places": [
                 {"name": "Mosquée Hassan II", "image": "assets/cities/hassan2.jpg", "note": "Grande mosquée au bord de l'océan.", "stars": 5},
@@ -164,9 +164,9 @@ def _default_cities():
             "stats": {"population": "1 million", "language": "Arabe, Berbère, Français, Anglais", "currency": "MAD", "climate": "Semi-aride chaud"},
             "location": {"lat": 31.6295, "lng": -7.9811},
             "restaurants": [
-                {"name": "Al Fassia", "image": "assets/cities/alfna.jpg", "note": "Cuisine marocaine raffinée.", "stars": 5},
+                {"name": "Al Fassia", "image": "assets/cities/mandarine.jpg", "note": "Cuisine marocaine raffinée.", "stars": 5},
                 {"name": "Le Jardin", "image": "assets/cities/lejardin.jpg", "note": "Terrasse avec vue imprenable.", "stars": 4},
-                {"name": "Café de la Poste", "image": "assets/cities/bleu.jpg", "note": "Ambiance chic et décontractée.", "stars": 4},
+                {"name": "Café de la Poste", "image": "assets/cities/sqala.jpg", "note": "Ambiance chic et décontractée.", "stars": 4},
             ],
             "hotels": [
                 {"name": "La Mamounia", "image": "assets/cities/mamoniya.jpg", "note": "Palais légendaire au cœur des jardins.", "stars": 5},
@@ -174,9 +174,9 @@ def _default_cities():
                 {"name": "Riad Fès", "image": "assets/cities/riad.jpg", "note": "Riad authentique et luxueux.", "stars": 5},
             ],
             "transports": [
-                {"name": "Train (ONCF)", "image": "assets/cities/rabat.png", "note": "ONCF"},
-                {"name": "Bus", "image": "assets/cities/rabat.png", "note": "ALSA"},
-                {"name": "Taxi", "image": "assets/cities/rabat.png", "note": "Petits et grands taxis"},
+                {"name": "Train (ONCF)", "note": "ONCF"},
+                {"name": "Bus", "note": "ALSA"},
+                {"name": "Taxi", "note": "Petits et grands taxis"},
             ],
             "places": [
                 {"name": "Jemaa el-Fna", "image": "assets/cities/alfna.jpg", "note": "Place animée célèbre dans le monde.", "stars": 5},
@@ -200,9 +200,9 @@ def _default_cities():
                 {"name": "La Tour Hassan Palace", "image": "assets/cities/hassan.jpg", "note": "Palace historique.", "stars": 5},
             ],
             "transports": [
-                {"name": "Train (ONCF)", "image": "assets/cities/rabat.png", "note": "ONCF"},
-                {"name": "Tramway", "image": "assets/cities/rabat.png", "note": "Ligne Rabat-Salé"},
-                {"name": "Bus", "image": "assets/cities/rabat.png", "note": "ALSA"},
+                {"name": "Train (ONCF)", "note": "ONCF"},
+                {"name": "Tramway", "note": "Ligne Rabat-Salé"},
+                {"name": "Bus", "note": "ALSA"},
             ],
             "places": [
                 {"name": "Tour Hassan", "image": "assets/cities/hassan.jpg", "note": "Forteresse historique en bord de mer.", "stars": 5},
@@ -218,16 +218,16 @@ def _default_cities():
             "stats": {"population": "420 000", "language": "Arabe, Berbère, Français, Anglais", "currency": "MAD", "climate": "Semi-aride côtier"},
             "location": {"lat": 30.4278, "lng": -9.5981},
             "restaurants": [
-                {"name": "Le Jardin d'Eau", "image": "assets/cities/jardin.jpg", "note": "Cuisine marocaine traditionnelle.", "stars": 4},
+                {"name": "Le Jardin d'Eau", "image": "assets/cities/sofitel1.jpg", "note": "Cuisine marocaine traditionnelle.", "stars": 4},
                 {"name": "Pure Passion", "image": "assets/cities/passion.jpg", "note": "Cuisine internationale et fruits de mer.", "stars": 5},
             ],
             "hotels": [
-                {"name": "Sofitel Agadir Thalassa Sea & Spa", "image": "assets/cities/sofitel1.jpg", "note": "Hôtel de luxe face à l'océan.", "stars": 5},
+                {"name": "Sofitel Agadir Thalassa Sea & Spa", "image": "assets/cities/sofitel.jpg", "note": "Hôtel de luxe face à l'océan.", "stars": 5},
                 {"name": "Hotel Club Les Orangers", "image": "assets/cities/plage.jpg", "note": "Station balnéaire populaire.", "stars": 4},
             ],
             "transports": [
-                {"name": "Bus", "image": "assets/cities/rabat.png", "note": "ALSA"},
-                {"name": "Taxi", "image": "assets/cities/rabat.png", "note": "Petits et grands taxis"},
+                {"name": "Bus", "note": "ALSA"},
+                {"name": "Taxi", "note": "Petits et grands taxis"},
             ],
             "places": [
                 {"name": "Plage d'Agadir", "image": "assets/cities/plage.jpg", "note": "Plage de sable fin très fréquentée.", "stars": 5},
@@ -251,8 +251,8 @@ def _default_cities():
                 {"name": "Riad Balima", "image": "assets/cities/balima.jpg", "note": "Riad authentique et luxueux.", "stars": 4},
             ],
             "transports": [
-                {"name": "Bus", "image": "assets/cities/rabat.png", "note": "ALSA"},
-                {"name": "Taxi", "image": "assets/cities/rabat.png", "note": "Petits et grands taxis"},
+                {"name": "Bus", "note": "ALSA"},
+                {"name": "Taxi", "note": "Petits et grands taxis"},
             ],
             "places": [
                 {"name": "Médina d'Essaouira", "image": "assets/cities/swira.jpg", "note": "Ville historique fortifiée et préservée.", "stars": 5},
@@ -276,8 +276,8 @@ def _default_cities():
                 {"name": "Hotel Barcelona", "image": "assets/cities/kasbah1.jpg", "note": "Hôtel de charme.", "stars": 3},
             ],
             "transports": [
-                {"name": "Bus", "image": "assets/cities/rabat.png", "note": "CTM / Supratours"},
-                {"name": "Taxi", "image": "assets/cities/rabat.png", "note": "Petits taxis"},
+                {"name": "Bus", "note": "CTM / Supratours"},
+                {"name": "Taxi", "note": "Petits taxis"},
             ],
             "places": [
                 {"name": "Médina bleue", "image": "assets/cities/bleu.jpg", "note": "Ruelles pittoresques de la médina.", "stars": 5},
@@ -294,16 +294,16 @@ def _default_cities():
             "location": {"lat": 34.0181, "lng": -5.0078},
             "restaurants": [
                 {"name": "Riad Fès", "image": "assets/cities/riad.jpg", "note": "Cuisine marocaine raffinée.", "stars": 5},
-                {"name": "Maison Bleue", "image": "assets/cities/bleu.jpg", "note": "Palais restauré avec fresques.", "stars": 5},
+                {"name": "Maison Bleue", "image": "assets/cities/lejardin.jpg", "note": "Palais restauré avec fresques.", "stars": 5},
             ],
             "hotels": [
                 {"name": "Palais Amani", "image": "assets/cities/riad2.jpg", "note": "Palais restauré avec fresques.", "stars": 5},
                 {"name": "Riad Laaroussa", "image": "assets/cities/riad2.jpg", "note": "Riad authentique et luxueux.", "stars": 5},
             ],
             "transports": [
-                {"name": "Train (ONCF)", "image": "assets/cities/rabat.png", "note": "ONCF"},
-                {"name": "Bus", "image": "assets/cities/rabat.png", "note": "ALSA"},
-                {"name": "Taxi", "image": "assets/cities/rabat.png", "note": "Petits et grands taxis"},
+                {"name": "Train (ONCF)", "note": "ONCF"},
+                {"name": "Bus", "note": "ALSA"},
+                {"name": "Taxi", "note": "Petits et grands taxis"},
             ],
             "places": [
                 {"name": "Médina de Fès", "image": "assets/cities/fes1.jpg", "note": "Ville sainte et lieu de pèlerinage.", "stars": 5},
@@ -327,9 +327,9 @@ def _default_cities():
                 {"name": "Hilton Tanger City Center", "image": "assets/cities/sofitel1.jpg", "note": "Hôtel moderne centre-ville.", "stars": 5},
             ],
             "transports": [
-                {"name": "Train (ONCF)", "image": "assets/cities/rabat.png", "note": "ONCF (LGV Al Boraq)"},
-                {"name": "Bus", "image": "assets/cities/rabat.png", "note": "ALSA"},
-                {"name": "Taxi", "image": "assets/cities/rabat.png", "note": "Petits et grands taxis"},
+                {"name": "Train (ONCF)", "note": "ONCF (LGV Al Boraq)"},
+                {"name": "Bus", "note": "ALSA"},
+                {"name": "Taxi", "note": "Petits et grands taxis"},
             ],
             "places": [
                 {"name": "Cap Spartel", "image": "assets/cities/cornich.jpg", "note": "Phare et promenade en bord de mer.", "stars": 4},
@@ -353,8 +353,8 @@ def _default_cities():
                 {"name": "Auberge du Désert", "image": "assets/cities/chemeau.jpg", "note": "Excursions en 4x4 et balade à dromadaire.", "stars": 3},
             ],
             "transports": [
-                {"name": "Bus", "image": "assets/cities/rabat.png", "note": "CTM / Supratours"},
-                {"name": "4x4", "image": "assets/cities/rabat.png", "note": "Excursions 4x4"},
+                {"name": "Bus", "note": "CTM / Supratours"},
+                {"name": "4x4", "note": "Excursions 4x4"},
             ],
             "places": [
                 {"name": "Erg Chebbi", "image": "assets/cities/chebbi.jpg", "note": "Dunes de sable spectaculaires.", "stars": 5},
@@ -378,8 +378,8 @@ def _default_cities():
                 {"name": "Hotel La Gazelle", "image": "assets/cities/kasbah1.jpg", "note": "Hôtel de charme.", "stars": 4},
             ],
             "transports": [
-                {"name": "Bus", "image": "assets/cities/rabat.png", "note": "CTM / Supratours"},
-                {"name": "Taxi", "image": "assets/cities/rabat.png", "note": "Grands taxis"},
+                {"name": "Bus", "note": "CTM / Supratours"},
+                {"name": "Taxi", "note": "Grands taxis"},
             ],
             "places": [
                 {"name": "Kasbah Aït Ben Haddou", "image": "assets/cities/kasbahh.jpg", "note": "Village fortifié (ksar) historique.", "stars": 5},
@@ -391,21 +391,17 @@ def _default_cities():
 
 
 def seed_cities():
-    """Insert default cities if table is empty"""
+    """Insert or update all default cities"""
     conn = _connect()
     if not conn:
         return
     cursor = None
     try:
         cursor = conn.cursor(dictionary=True)
-        cursor.execute("SELECT COUNT(*) as cnt FROM cities")
-        row = cursor.fetchone()
-        if row and row["cnt"] > 0:
-            return
         cities = _default_cities()
         for c in cities:
             save_city(c)
-        log.info(f"Seeded {len(cities)} cities")
+        log.info(f"Seeded/updated {len(cities)} cities")
     except mysql.connector.Error as e:
         log.error(f"seed_cities error: {e}")
     finally:
