@@ -286,8 +286,11 @@ def send_email(to_email, subject, body, html=False):
         msg["Subject"] = subject
         msg["Date"] = datetime.now().strftime("%a, %d %b %Y %H:%M:%S +0000")
         msg["Message-ID"] = "<{:.0f}@touristique-guide>".format(datetime.now().timestamp() * 1000)
-        server = smtplib.SMTP(config.SMTP_HOST, config.SMTP_PORT, timeout=15)
-        server.starttls()
+        if config.SMTP_PORT == 465:
+            server = smtplib.SMTP_SSL(config.SMTP_HOST, config.SMTP_PORT, timeout=15)
+        else:
+            server = smtplib.SMTP(config.SMTP_HOST, config.SMTP_PORT, timeout=15)
+            server.starttls()
         server.login(config.SMTP_USER, config.SMTP_PASS)
         server.sendmail(config.SMTP_FROM, [to_email], msg.as_string().encode("utf-8"))
         server.quit()
@@ -509,12 +512,8 @@ def api_reserve():
     if dr and not re.match(r"^\d{4}-\d{2}-\d{2}$", dr):
         return jsonify({"error": "invalid date format"}), 400
     if dr:
-        try:
-            res_date = datetime.strptime(dr, "%Y-%m-%d").date()
-            if res_date <= date(2026, 7, 5):
-                return jsonify({"error": "La date de réservation doit être après le 05/07/2026."}), 400
-        except ValueError:
-            return jsonify({"error": "invalid date format"}), 400
+        if dr < '2026-07-06':
+            return jsonify({"error": "La date de réservation doit être à partir du 06/07/2026."}), 400
     cat = data.get("category", "")
     if cat == "hotel":
         nights = data.get("nights", "")

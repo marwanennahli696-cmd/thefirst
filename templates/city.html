@@ -193,8 +193,8 @@
       <div id="res-hotel-fields" style="display:none;">
         <div class="form-group"><label style="color:#ccc;font-size:11px;">{{ _('reserve_date_res') }}</label><input type="date" id="res-date-res" pattern="\d{4}-\d{2}-\d{2}" style="width:100%;padding:7px 10px;border:1px solid #2a2a4a;border-radius:6px;background:#000;color:#e0e0e0;font-size:12px;outline:none;"></div>
           <div style="display:flex;gap:8px;">
-          <div class="form-group" style="flex:1;"><label style="color:#ccc;font-size:11px;">{{ _('reserve_nights') }} <span style="color:#8899aa;">(100dh)</span></label><input type="number" id="res-nights" min="1" value="1" oninput="calcTotal()" style="width:100%;padding:7px 10px;border:1px solid #2a2a4a;border-radius:6px;background:#000;color:#e0e0e0;font-size:12px;outline:none;"></div>
-          <div class="form-group" style="flex:1;"><label style="color:#ccc;font-size:11px;">{{ _('reserve_persons') }} <span style="color:#8899aa;">(50dh)</span></label><input type="number" id="res-persons" min="1" value="1" oninput="calcTotal()" style="width:100%;padding:7px 10px;border:1px solid #2a2a4a;border-radius:6px;background:#000;color:#e0e0e0;font-size:12px;outline:none;"></div>
+          <div class="form-group" style="flex:1;"><label style="color:#ccc;font-size:11px;">{{ _('reserve_nights') }} <span style="color:#8899aa;">(100dh)</span></label><input type="number" id="res-nights" min="0" value="0" oninput="calcTotal()" style="width:100%;padding:7px 10px;border:1px solid #2a2a4a;border-radius:6px;background:#000;color:#e0e0e0;font-size:12px;outline:none;"></div>
+          <div class="form-group" style="flex:1;"><label style="color:#ccc;font-size:11px;">{{ _('reserve_persons') }} <span style="color:#8899aa;">(50dh)</span></label><input type="number" id="res-persons" min="0" value="0" oninput="calcTotal()" style="width:100%;padding:7px 10px;border:1px solid #2a2a4a;border-radius:6px;background:#000;color:#e0e0e0;font-size:12px;outline:none;"></div>
         </div>
         <div class="form-group"><label style="color:#ccc;font-size:11px;">{{ _('reserve_total') }}</label><input type="text" id="res-total" readonly style="width:100%;padding:7px 10px;border:1px solid #2a2a4a;border-radius:6px;background:#111;color:#3ea8da;font-size:12px;font-weight:700;outline:none;"></div>
       </div>
@@ -252,8 +252,6 @@ function openReserve(btn) {
   var h = document.getElementById('res-hotel-fields');
   var r = document.getElementById('res-restaurant-fields');
   if (category === 'hotel') {
-    document.getElementById('res-nights').value = 1;
-    document.getElementById('res-persons').value = 1;
     h.style.display = '';
     r.style.display = 'none';
     calcTotal();
@@ -299,7 +297,7 @@ function submitReserve() {
     var p = parseInt(document.getElementById('res-persons').value) || 0;
     var d = document.getElementById('res-date-res').value;
     if (!d) { ok = false; err = '{{ _('reserve_enter_date') }}'; }
-    else if (new Date(d) <= new Date('2026-07-05')) { ok = false; err = 'La date doit être après le 05/07/2026.'; }
+    else if (d < '2026-07-06') { ok = false; err = 'La date doit être à partir du 06/07/2026.'; }
     else if (n < 1) { ok = false; err = '{{ _('reserve_err_nights') }}'; }
     else if (p < 1) { ok = false; err = '{{ _('reserve_err_persons') }}'; }
     else if (p === 1 && n >= 9) { ok = false; err = '{{ _('reserve_err_1p9n') }}'; }
@@ -307,7 +305,7 @@ function submitReserve() {
   } else {
     var d = document.getElementById('res-date-res-r').value;
     if (!d) { showMsg('{{ _('reserve_enter_date') }}', true); return false; }
-    if (new Date(d) <= new Date('2026-07-05')) { showMsg('La date doit être après le 05/07/2026.', true); return false; }
+    if (d < '2026-07-06') { showMsg('La date doit être à partir du 06/07/2026.', true); return false; }
     var qs = document.querySelectorAll('#res-restaurant-fields .menu-qty');
     var hasItem = false;
     for (var i = 0; i < qs.length; i++) {
