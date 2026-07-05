@@ -16,10 +16,11 @@ SMTP_USER = os.environ.get("SMTP_USER", "guidtoristique@gmail.com")
 SMTP_PASS = os.environ.get("SMTP_PASS", "")
 SMTP_FROM = os.environ.get("SMTP_FROM", "guidtoristique@gmail.com")
 
-MYSQL_HOST = os.environ.get("MYSQL_HOST", "localhost")
-MYSQL_USER = os.environ.get("MYSQL_USER", "root")
-MYSQL_PASS = os.environ.get("MYSQL_PASS", "")
-MYSQL_DB = os.environ.get("MYSQL_DB", "tourist_guide")
+MYSQL_HOST = os.environ.get("MYSQLHOST", os.environ.get("MYSQL_HOST", "localhost"))
+MYSQL_PORT = int(os.environ.get("MYSQLPORT", os.environ.get("MYSQL_PORT", "3306")))
+MYSQL_USER = os.environ.get("MYSQLUSER", os.environ.get("MYSQL_USER", "root"))
+MYSQL_PASS = os.environ.get("MYSQLPASSWORD", os.environ.get("MYSQL_PASS", ""))
+MYSQL_DB = os.environ.get("MYSQLDATABASE", os.environ.get("MYSQL_DB", "tourist_guide"))
 
 SITE_URL = os.environ.get("SITE_URL", "http://127.0.0.1:5000")
 
