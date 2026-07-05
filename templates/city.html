@@ -247,9 +247,13 @@ function openReserve(btn) {
   document.getElementById('reserve-form').style.display = '';
   document.getElementById('reserve-msg').style.display = 'none';
   document.getElementById('reserve-modal').style.display = 'flex';
+  document.getElementById('res-date-res').value = '';
+  document.getElementById('res-date-res-r').value = '';
   var h = document.getElementById('res-hotel-fields');
   var r = document.getElementById('res-restaurant-fields');
   if (category === 'hotel') {
+    document.getElementById('res-nights').value = 1;
+    document.getElementById('res-persons').value = 1;
     h.style.display = '';
     r.style.display = 'none';
     calcTotal();
@@ -295,7 +299,7 @@ function submitReserve() {
     var p = parseInt(document.getElementById('res-persons').value) || 0;
     var d = document.getElementById('res-date-res').value;
     if (!d) { ok = false; err = '{{ _('reserve_enter_date') }}'; }
-    else if (d <= '2026-07-05') { ok = false; err = 'La date doit être après le 05/07/2026.'; }
+    else if (new Date(d) <= new Date('2026-07-05')) { ok = false; err = 'La date doit être après le 05/07/2026.'; }
     else if (n < 1) { ok = false; err = '{{ _('reserve_err_nights') }}'; }
     else if (p < 1) { ok = false; err = '{{ _('reserve_err_persons') }}'; }
     else if (p === 1 && n >= 9) { ok = false; err = '{{ _('reserve_err_1p9n') }}'; }
@@ -303,7 +307,7 @@ function submitReserve() {
   } else {
     var d = document.getElementById('res-date-res-r').value;
     if (!d) { showMsg('{{ _('reserve_enter_date') }}', true); return false; }
-    if (d <= '2026-07-05') { showMsg('La date doit être après le 05/07/2026.', true); return false; }
+    if (new Date(d) <= new Date('2026-07-05')) { showMsg('La date doit être après le 05/07/2026.', true); return false; }
     var qs = document.querySelectorAll('#res-restaurant-fields .menu-qty');
     var hasItem = false;
     for (var i = 0; i < qs.length; i++) {
