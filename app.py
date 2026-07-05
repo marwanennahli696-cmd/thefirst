@@ -5,6 +5,7 @@ import smtplib
 
 import re
 import urllib.parse
+import mysql.connector
 from email.mime.text import MIMEText
 from datetime import datetime
 
@@ -26,8 +27,9 @@ app = Flask(__name__, static_folder="static", static_url_path="/static")
 app.secret_key = config.FLASK_SECRET_KEY
 app.config["SESSION_PERMANENT"] = False
 
-# Initialize database tables
+# Initialize database tables and seed data
 database.init_tables()
+database.seed_cities()
 
 
 @app.before_request
