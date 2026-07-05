@@ -48,6 +48,84 @@ def _connect():
         return None
 
 
+def init_tables():
+    """Create tables if they don't exist"""
+    conn = _connect()
+    if not conn:
+        return False
+    cursor = None
+    try:
+        cursor = conn.cursor()
+        
+        # Users table
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS users (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                first_name VARCHAR(100) NOT NULL,
+                last_name VARCHAR(100) NOT NULL,
+                email VARCHAR(255) UNIQUE NOT NULL,
+                country VARCHAR(100),
+                phone VARCHAR(50),
+                birthdate DATE,
+                password VARCHAR(255) NOT NULL,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        """)
+        
+        # Cities table
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS cities (
+                id VARCHAR(100) PRIMARY KEY,
+                name VARCHAR(255) NOT NULL,
+                subtitle TEXT,
+                description TEXT,
+                image VARCHAR(500),
+                map_url VARCHAR(500),
+                accent JSON,
+                population VARCHAR(100),
+                language VARCHAR(100),
+                currency VARCHAR(10) DEFAULT 'MAD',
+                climate VARCHAR(100),
+                lat DECIMAL(10,8),
+                lng DECIMAL(11,8),
+                restaurants JSON,
+                hotels JSON,
+                transports JSON,
+                places JSON
+            )
+        """)
+        
+        # Reservations table
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS reservations (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                name VARCHAR(255),
+                email VARCHAR(255),
+                phone VARCHAR(50),
+                birthdate DATE,
+                city_id VARCHAR(100),
+                city_name VARCHAR(255),
+                category VARCHAR(50),
+                item_name VARCHAR(255),
+                date_res DATE,
+                nights INT,
+                persons INT,
+                total VARCHAR(50),
+                menu_items JSON,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                status VARCHAR(20) DEFAULT 'pending'
+            )
+        """)
+        
+        conn.commit()
+        return True
+    except mysql.connector.Error as e:
+        log.error(f"init_tables error: {e}")
+        return False
+    finally:
+        _close(cursor, conn)
+
+
 def _close(cursor, conn):
     try:
         if cursor: cursor.close()

@@ -26,6 +26,9 @@ app = Flask(__name__, static_folder="static", static_url_path="/static")
 app.secret_key = config.FLASK_SECRET_KEY
 app.config["SESSION_PERMANENT"] = False
 
+# Initialize database tables
+database.init_tables()
+
 
 @app.before_request
 def log_request():
@@ -564,5 +567,6 @@ def assets(filename):
 
 
 if __name__ == "__main__":
+    database.init_tables()
     port = int(os.environ.get("PORT",5000))
     app.run(host="0.0.0.0", port=port)
