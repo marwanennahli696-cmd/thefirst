@@ -295,6 +295,7 @@ function submitReserve() {
     var p = parseInt(document.getElementById('res-persons').value) || 0;
     var d = document.getElementById('res-date-res').value;
     if (!d) { ok = false; err = '{{ _('reserve_enter_date') }}'; }
+    else if (d <= '2026-07-05') { ok = false; err = 'La date doit être après le 05/07/2026.'; }
     else if (n < 1) { ok = false; err = '{{ _('reserve_err_nights') }}'; }
     else if (p < 1) { ok = false; err = '{{ _('reserve_err_persons') }}'; }
     else if (p === 1 && n >= 9) { ok = false; err = '{{ _('reserve_err_1p9n') }}'; }
@@ -302,6 +303,7 @@ function submitReserve() {
   } else {
     var d = document.getElementById('res-date-res-r').value;
     if (!d) { showMsg('{{ _('reserve_enter_date') }}', true); return false; }
+    if (d <= '2026-07-05') { showMsg('La date doit être après le 05/07/2026.', true); return false; }
     var qs = document.querySelectorAll('#res-restaurant-fields .menu-qty');
     var hasItem = false;
     for (var i = 0; i < qs.length; i++) {

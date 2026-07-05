@@ -653,19 +653,23 @@ def add_reservation(res):
     cursor = None
     try:
         cursor = conn.cursor()
+        def v(val, default=None):
+            return val if val else default
         cursor.execute("""
             INSERT INTO reservations (name, email, phone, birthdate,
                 city_id, city_name, category, item_name, date_res,
                 nights, persons, total, menu_items, created_at, status)
             VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
         """, (
-            res.get("name",""), res.get("email",""),
-            res.get("phone",""), res.get("birthdate",""),
-            res.get("city_id",""), res.get("city_name",""),
-            res.get("category",""), res.get("item_name",""),
-            res.get("date_res",""), res.get("nights",""), res.get("persons",""),
-            res.get("total",""), json.dumps(res.get("menu_items","")),
-            res.get("created_at",""), "pending",
+            v(res.get("name")), v(res.get("email")),
+            v(res.get("phone")), v(res.get("birthdate")),
+            v(res.get("city_id")), v(res.get("city_name")),
+            v(res.get("category")), v(res.get("item_name")),
+            v(res.get("date_res")),
+            int(res["nights"]) if res.get("nights") else None,
+            int(res["persons"]) if res.get("persons") else None,
+            v(res.get("total")), json.dumps(res.get("menu_items","")),
+            datetime.now().isoformat(), "pending",
         ))
         res_id = cursor.lastrowid
         conn.commit()

@@ -7,7 +7,7 @@ import re
 import urllib.parse
 import mysql.connector
 from email.mime.text import MIMEText
-from datetime import datetime
+from datetime import datetime, date
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
@@ -131,6 +131,10 @@ def signin():
             audit.warning(f"FAILED LOGIN | {email}")
             return render_template("signup.html", error=translate("login_err_password"), show_login=True)
         audit.info(f"LOGIN | {email}")
+        # Convert date objects to strings for session
+        for key in ("birthdate", "created_at"):
+            if isinstance(existing.get(key), (datetime, date)):
+                existing[key] = existing[key].isoformat()
         session["user"] = existing
         return redirect("/")
 
@@ -504,6 +508,13 @@ def api_reserve():
         return jsonify({"error": "invalid birthdate format"}), 400
     if dr and not re.match(r"^\d{4}-\d{2}-\d{2}$", dr):
         return jsonify({"error": "invalid date format"}), 400
+    if dr:
+        try:
+            res_date = datetime.strptime(dr, "%Y-%m-%d").date()
+            if res_date <= date(2026, 7, 5):
+                return jsonify({"error": "La date de réservation doit être après le 05/07/2026."}), 400
+        except ValueError:
+            return jsonify({"error": "invalid date format"}), 400
     cat = data.get("category", "")
     if cat == "hotel":
         nights = data.get("nights", "")
