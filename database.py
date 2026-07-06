@@ -576,7 +576,11 @@ def delete_city(city_id: str) -> bool:
         _close(cursor, conn)
 
 
+_VALID_SECTIONS = {"restaurants", "hotels", "transports", "places"}
+
 def add_item(city_id: str, section: str, item: Dict[str, Any]) -> Optional[Dict]:
+    if section not in _VALID_SECTIONS:
+        raise ValueError(f"Invalid section: {section}")
     city = get_city(city_id)
     if not city:
         return None
@@ -599,6 +603,8 @@ def add_item(city_id: str, section: str, item: Dict[str, Any]) -> Optional[Dict]
 
 
 def update_item(city_id: str, section: str, idx: int, item: Dict) -> Optional[Dict]:
+    if section not in _VALID_SECTIONS:
+        raise ValueError(f"Invalid section: {section}")
     city = get_city(city_id)
     if not city:
         return None
@@ -623,6 +629,8 @@ def update_item(city_id: str, section: str, idx: int, item: Dict) -> Optional[Di
 
 
 def delete_item(city_id: str, section: str, idx: int) -> bool:
+    if section not in _VALID_SECTIONS:
+        raise ValueError(f"Invalid section: {section}")
     city = get_city(city_id)
     if not city:
         return False
@@ -666,10 +674,10 @@ def add_reservation(res):
             v(res.get("city_id")), v(res.get("city_name")),
             v(res.get("category")), v(res.get("item_name")),
             v(res.get("date_res")),
-            int(res["nights"]) if res.get("nights") else None,
-            int(res["persons"]) if res.get("persons") else None,
+            int(res.get("nights")) if res.get("nights") else None,
+            int(res.get("persons")) if res.get("persons") else None,
             v(res.get("total")), json.dumps(res.get("menu_items","")),
-            datetime.now().isoformat(), "pending",
+            datetime.now().strftime("%Y-%m-%d %H:%M:%S"), "pending",
         ))
         res_id = cursor.lastrowid
         conn.commit()
@@ -735,8 +743,8 @@ def add_user(data):
         cursor.execute("""INSERT INTO users (first_name, last_name, email, country, phone, birthdate, password, created_at)
                           VALUES (%s,%s,%s,%s,%s,%s,%s,%s)""",
                        (data["first_name"], data["last_name"], data["email"],
-                        data["country"], data.get("phone",""), data.get("birthdate",""),
-                        data["password"], datetime.now().isoformat()))
+                        data["country"], data.get("phone",""), data.get("birthdate") or None,
+                        data["password"], datetime.now().strftime("%Y-%m-%d %H:%M:%S")))
         conn.commit()
         return {"id": cursor.lastrowid}
     except mysql.connector.Error as e:

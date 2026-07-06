@@ -2,9 +2,10 @@ import os
 import sys
 import json
 import smtplib
-
-import re
+import urllib.request
+import urllib.error
 import urllib.parse
+import re
 import mysql.connector
 from email.mime.text import MIMEText
 from datetime import datetime, date
@@ -276,25 +277,31 @@ def api_chat():
     return jsonify({"reply": translate("chat_fallback")})
 
 def send_email(to_email, subject, body, html=False):
-    if not config.SMTP_USER or not config.SMTP_PASS:
-        return False, "SMTP_USER ou SMTP_PASS vide"
+    api_key = config.SMTP_PASS or os.environ.get("SENDGRID_API_KEY", "")
+    from_email = config.SMTP_FROM
+    if not api_key or not from_email:
+        return False, "Clé API SendGrid ou SMTP_FROM non configuré"
     try:
-        subtype = "html" if html else "plain"
-        msg = MIMEText(str(body), subtype, "utf-8")
-        msg["From"] = config.SMTP_FROM
-        msg["To"] = to_email
-        msg["Subject"] = subject
-        msg["Date"] = datetime.now().strftime("%a, %d %b %Y %H:%M:%S +0000")
-        msg["Message-ID"] = "<{:.0f}@touristique-guide>".format(datetime.now().timestamp() * 1000)
-        if config.SMTP_PORT == 465:
-            server = smtplib.SMTP_SSL(config.SMTP_HOST, config.SMTP_PORT, timeout=15)
-        else:
-            server = smtplib.SMTP(config.SMTP_HOST, config.SMTP_PORT, timeout=15)
-            server.starttls()
-        server.login(config.SMTP_USER, config.SMTP_PASS)
-        server.sendmail(config.SMTP_FROM, [to_email], msg.as_string().encode("utf-8"))
-        server.quit()
+        content_type = "text/html" if html else "text/plain"
+        data = json.dumps({
+            "personalizations": [{"to": [{"email": to_email}]}],
+            "from": {"email": from_email},
+            "subject": subject,
+            "content": [{"type": content_type, "value": body}],
+        }).encode("utf-8")
+        req = urllib.request.Request(
+            "https://api.sendgrid.com/v3/mail/send",
+            data=data,
+            headers={
+                "Authorization": f"Bearer {api_key}",
+                "Content-Type": "application/json",
+            },
+        )
+        resp = urllib.request.urlopen(req, timeout=15)
         return True, "OK"
+    except urllib.error.HTTPError as e:
+        err_body = e.read().decode("utf-8", errors="replace")
+        return False, f"SendGrid HTTP {e.code}: {err_body}"
     except Exception as e:
         return False, str(e)
 
@@ -372,7 +379,7 @@ def admin_accept(res_id):
             return redirect("/admin/dashboard?msg=" + urllib.parse.quote("Email envoyé à " + r.get("email","")))
         else:
             return redirect("/admin/dashboard?msg=" + urllib.parse.quote("Email ÉCHEC: " + err))
-    return redirect("/admin/dashboard?msg=" + urllib.parse.quote("Réservation acceptée"))
+    return redirect("/admin/dashboard?msg=" + urllib.parse.quote("Réservation introuvable"))
 
 
 @app.route("/admin/refuse/<int:res_id>")
@@ -391,7 +398,7 @@ def admin_refuse(res_id):
             return redirect("/admin/dashboard?msg=" + urllib.parse.quote("Email envoyé à " + r.get("email","")))
         else:
             return redirect("/admin/dashboard?msg=" + urllib.parse.quote("Email ÉCHEC: " + err))
-    return redirect("/admin/dashboard?msg=" + urllib.parse.quote("Réservation refusée"))
+    return redirect("/admin/dashboard?msg=" + urllib.parse.quote("Réservation introuvable"))
 
 
 
@@ -533,12 +540,14 @@ def api_reserve():
         menu_str = data.get("menu_items", "")
         if not menu_str:
             return jsonify({"error": "no menu items selected"}), 400
-        try:
+        if isinstance(menu_str, str):
             items = json.loads(menu_str)
-            if not items or len(items) == 0:
-                return jsonify({"error": "no menu items selected"}), 400
-        except json.JSONDecodeError:
+        elif isinstance(menu_str, list):
+            items = menu_str
+        else:
             return jsonify({"error": "invalid menu data"}), 400
+        if not items or len(items) == 0:
+            return jsonify({"error": "no menu items selected"}), 400
     res = {
         "name": data.get("name", ""),
         "email": data.get("email", ""),
@@ -552,8 +561,8 @@ def api_reserve():
         "nights": data.get("nights", ""),
         "persons": data.get("persons", ""),
         "total": data.get("total", ""),
-        "menu_items": data.get("menu_items", ""),
-        "created_at": datetime.now().isoformat(),
+        "menu_items": items,
+        "created_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
     }
     saved = database.add_reservation(res)
     if not saved:

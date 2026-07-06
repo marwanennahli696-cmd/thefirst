@@ -10,9 +10,9 @@ FLASK_PORT = 5000
 ADMIN_USER = os.environ.get("ADMIN_USER", "admin")
 ADMIN_PASS = os.environ.get("ADMIN_PASS", "marwan2007")
 
-SMTP_HOST = os.environ.get("SMTP_HOST", "smtp.gmail.com")
-SMTP_PORT = int(os.environ.get("SMTP_PORT", "465"))
-SMTP_USER = os.environ.get("SMTP_USER", "guidtoristique@gmail.com")
+SMTP_HOST = os.environ.get("SMTP_HOST", "")
+SMTP_PORT = int(os.environ.get("SMTP_PORT", "0"))
+SMTP_USER = os.environ.get("SMTP_USER", "")
 SMTP_PASS = os.environ.get("SMTP_PASS", os.environ.get("SENDGRID_API_KEY", ""))
 SMTP_FROM = os.environ.get("SMTP_FROM", "guidtoristique@gmail.com")
 
