@@ -3,6 +3,16 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 os.environ.setdefault("SMTP_PASS", "wnotpnjkoifygfea")
 
+# Load .env file if it exists
+env_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), ".env")
+if os.path.exists(env_path):
+    with open(env_path) as f:
+        for line in f:
+            line = line.strip()
+            if line and not line.startswith("#") and "=" in line:
+                k, v = line.split("=", 1)
+                os.environ[k.strip()] = v.strip().strip("\"'")
+
 try:
     import tkinter as tk
 except ImportError:
@@ -18,7 +28,7 @@ def start():
         debug=False, port=config.FLASK_PORT, host="127.0.0.1", use_reloader=False
     ), daemon=True).start()
     threading.Timer(1.5, lambda: webbrowser.open("http://127.0.0.1:5000")).start()
-    btn.config(state="disabled", text="✔ Lancé")
+    btn.config(state="disabled", text=" Lancé")
 
 root = tk.Tk()
 root.title("Guide Touristique")

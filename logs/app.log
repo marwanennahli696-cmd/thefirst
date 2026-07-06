@@ -10,3 +10,6 @@
 2026-07-06 08:14:55 [INFO] GET /signup
 2026-07-06 08:15:30 [INFO] POST /signin
 2026-07-06 08:15:31 [INFO] GET /
+2026-07-06 08:44:34 [INFO] MySQL config: host=localhost port=3306 db=tourist_guide user=root
+2026-07-06 08:44:34 [INFO] Seeded/updated 10 cities
+2026-07-06 08:44:40 [INFO] GET /
