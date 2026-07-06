@@ -562,7 +562,7 @@ def api_reserve():
         "nights": data.get("nights", ""),
         "persons": data.get("persons", ""),
         "total": data.get("total", ""),
-        "menu_items": items,
+        "menu_items": items if cat == "restaurant" else [],
         "created_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
     }
     saved = database.add_reservation(res)
