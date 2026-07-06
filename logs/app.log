@@ -13,3 +13,29 @@
 2026-07-06 08:44:34 [INFO] MySQL config: host=localhost port=3306 db=tourist_guide user=root
 2026-07-06 08:44:34 [INFO] Seeded/updated 10 cities
 2026-07-06 08:44:40 [INFO] GET /
+2026-07-06 08:48:55 [INFO] MySQL config: host=localhost port=3306 db=tourist_guide user=root
+2026-07-06 08:48:55 [INFO] Seeded/updated 10 cities
+2026-07-06 08:48:59 [INFO] GET /
+2026-07-06 08:49:02 [INFO] GET /logout
+2026-07-06 08:49:02 [INFO] GET /signup
+2026-07-06 08:49:33 [INFO] POST /signin
+2026-07-06 08:49:33 [INFO] GET /
+2026-07-06 08:53:41 [INFO] MySQL config: host=localhost port=3306 db=tourist_guide user=root
+2026-07-06 08:53:42 [INFO] Seeded/updated 10 cities
+2026-07-06 08:53:46 [INFO] GET /
+2026-07-06 08:53:49 [INFO] GET /logout
+2026-07-06 08:53:49 [INFO] GET /signup
+2026-07-06 08:54:15 [INFO] POST /signin
+2026-07-06 08:54:15 [INFO] GET /
+2026-07-06 09:11:51 [INFO] MySQL config: host=localhost port=3306 db=tourist_guide user=root
+2026-07-06 09:11:52 [INFO] Seeded/updated 10 cities
+2026-07-06 09:11:56 [INFO] GET /
+2026-07-06 09:11:57 [INFO] GET /favicon.ico
+2026-07-06 09:13:32 [INFO] POST /signin
+2026-07-06 09:13:32 [INFO] GET /
+2026-07-06 09:13:34 [INFO] GET /city/agadir
+2026-07-06 09:14:27 [INFO] POST /api/reserve
+2026-07-06 09:14:31 [INFO] POST /api/reserve
+2026-07-06 09:14:31 [INFO] POST /api/reserve
+2026-07-06 09:14:32 [INFO] POST /api/reserve
+2026-07-06 09:14:32 [INFO] POST /api/reserve
