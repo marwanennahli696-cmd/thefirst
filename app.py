@@ -29,6 +29,7 @@ app.secret_key = config.FLASK_SECRET_KEY
 app.config["SESSION_PERMANENT"] = False
 
 # Initialize database tables and seed data
+log.info(f"MySQL config: host={config.MYSQL_HOST} port={config.MYSQL_PORT} db={config.MYSQL_DB} user={config.MYSQL_USER}")
 database.init_tables()
 database.seed_cities()
 
